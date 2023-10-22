@@ -6,23 +6,6 @@ import { Table } from "sst/node/table";
 
 const openaiKey = Config.OPENAI_API_KEY;
 
-interface EventBridgeEvent {
-    version: string;
-    id: string;
-    "detail-type": string;
-    source: string;
-    account: string;
-    time: string;
-    region: string;
-    resources: string[];
-    detail: {
-        interviewId: string;
-        userId: string;
-        prompt: string;
-        schema: any;
-    };
-}
-
 // lambda event bridge event
 export async function handler(event: any, context: any, callback: any) {
     console.log("Got event from eventbridge");
@@ -74,4 +57,21 @@ export async function handler(event: any, context: any, callback: any) {
     }));
 
     console.log("Updated interview in table");
+}
+
+interface EventBridgeEvent {
+    version: string;
+    id: string;
+    "detail-type": string;
+    source: string;
+    account: string;
+    time: string;
+    region: string;
+    resources: string[];
+    detail: {
+        interviewId: string;
+        userId: string;
+        prompt: string;
+        schema: any;
+    };
 }

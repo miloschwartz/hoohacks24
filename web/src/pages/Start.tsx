@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import UploadResume from "../components/UploadResume/UploadResume";
-import { apiClient } from "../App";
+import { UserContext, apiClient } from "../App";
 import { useNavigate } from "react-router-dom";
 
 function Start() {
@@ -9,7 +9,41 @@ function Start() {
   const [interviewType, setInterviewType] = useState<string>("Behaviorial");
   const [generateLoading, setGenerateLoading] = useState<boolean>(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
+
+  const user = useContext(UserContext);
   const navigate = useNavigate();
+
+  const generateInterview = async () => {
+    setGenerateLoading(true);
+
+    const formData = new FormData();
+    formData.append("file", resumeFile as Blob);
+    formData.append("jobTitle", jobTitle as string);
+    formData.append("jobDescription", jobDescription as string);
+    formData.append("interviewType", interviewType);
+    const genRes = await apiClient.post("/generate-interview", formData, {
+      headers: {},
+    });
+
+    if (genRes.data.interivewId) {
+      setGenerateLoading(false);
+      console.error("no interview id was provided");
+      return;
+    }
+
+    const poll = setInterval(async () => {
+      const res = await apiClient.get(
+        `/get-interview/${genRes.data.interviewId}`,
+        {}
+      );
+
+      if (res.data.status === "QUESTIONS_GENERATED") {
+        clearInterval(poll);
+        setGenerateLoading(false);
+        navigate(`/interview/${genRes.data.interviewId}`);
+      }
+    }, 3000);
+  };
 
   return (
     <>
@@ -75,50 +109,26 @@ function Start() {
             personalized questions. Your resume will not be stored.
           </label>
 
-          <button
-            className="btn btn-primary ml-auto mt-10"
-            disabled={generateLoading}
-            onClick={async () => {
-              setGenerateLoading(true);
-
-              const formData = new FormData();
-              formData.append("file", resumeFile as Blob);
-              formData.append("jobTitle", jobTitle as string);
-              formData.append("jobDescription", jobDescription as string);
-              formData.append("interviewType", interviewType);
-              const genRes = await apiClient.post(
-                "/generate-interview",
-                formData,
-                {
-                  headers: {},
-                }
-              );
-
-              if (genRes.data.interivewId) {
-                setGenerateLoading(false);
-                console.error("no interview id was provided");
-                return;
-              }
-
-              const poll = setInterval(async () => {
-                const res = await apiClient.get(
-                  `/get-interview/${genRes.data.interviewId}`,
-                  {}
-                );
-
-                if (res.data.status === "QUESTIONS_GENERATED") {
-                  clearInterval(poll);
-                  setGenerateLoading(false);
-                  navigate(`/interview/${genRes.data.interviewId}`);
-                }
-              }, 1000);
-            }}
-          >
-            {generateLoading ? (
-              <span className="loading loading-spinner loading-sm"></span>
-            ) : null}
-            Generate Interview
-          </button>
+          {user ? (
+            <button
+              className="btn btn-primary ml-auto mt-10"
+              disabled={generateLoading}
+              onClick={async () => await generateInterview()}
+            >
+              {generateLoading ? (
+                <span className="loading loading-spinner loading-sm"></span>
+              ) : null}
+              Generate Interview
+            </button>
+          ) : (
+            <a
+              href={`${import.meta.env.VITE_APP_API_URL}/auth/google/authorize`}
+              rel="noreferrer"
+              className="ml-auto mt-10"
+            >
+              <button className="btn btn-primary">Sign In to Begin</button>
+            </a>
+          )}
         </div>
       </div>
     </>
