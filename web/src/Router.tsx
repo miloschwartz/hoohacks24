@@ -21,26 +21,14 @@ function Router({ user }: RouterProps) {
           <Route path="/" element={<Home />}></Route>
           <Route path="/start" element={<Start />}></Route>
           <Route
-            path="/profile"
             element={
               <ProtectedRoute user={user}>
-                <Profile />
-              </ProtectedRoute>
-            }
-          ></Route>
-          <Route
-            path="/history"
-            element={
-              <ProtectedRoute user={user}>
-                <History />
-              </ProtectedRoute>
-            }
-          ></Route>
-          <Route
-            path="/interview/:interviewId"
-            element={
-              <ProtectedRoute user={user}>
-                <Interview />
+                <Route path="/profile" element={<Profile />}></Route>
+                <Route path="/history" element={<History />}></Route>
+                <Route
+                  path="/interview/:interviewId"
+                  element={<Interview />}
+                ></Route>
               </ProtectedRoute>
             }
           ></Route>

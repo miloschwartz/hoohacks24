@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import UploadResume from "../components/UploadResume/UploadResume";
 import { UserContext, apiClient } from "../App";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "../useToast";
 
 function Start() {
   const [jobDescription, setJobDescription] = useState<string | null>(null);
@@ -12,6 +13,7 @@ function Start() {
 
   const user = useContext(UserContext);
   const navigate = useNavigate();
+  const toast = useToast();
 
   const generateInterview = async () => {
     setGenerateLoading(true);
@@ -27,7 +29,10 @@ function Start() {
 
     if (genRes.data.interivewId) {
       setGenerateLoading(false);
-      console.error("no interview id was provided");
+      toast.open({
+        type: "error",
+        text: "Something went wrong. Please try again.",
+      });
       return;
     }
 
