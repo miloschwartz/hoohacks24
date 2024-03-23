@@ -1,0 +1,9 @@
+.drop-area {
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    transition: 0.3s;
+    height: 100px;
+    width: 100%;
+    cursor: pointer;
+}
