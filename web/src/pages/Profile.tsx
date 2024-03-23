@@ -2,16 +2,18 @@ import { useContext } from "react";
 import { UserContext } from "../App";
 
 function Profile() {
-  const userData = useContext(UserContext);
+  const context = useContext(UserContext);
+  const user = context?.userContext;
 
   return (
     <>
-      {userData && (
+      {user && (
         <div className="content-container">
-          <span className="font-bold text-4xl">Hello, {userData.name}</span>
-          <img src={userData.picture} alt="picture " className="p-10" />
+          <span className="font-bold text-4xl">Hello, {user.name}</span>
+          <img src={user.picture} alt="picture " className="p-10" />
           <div>
-            <p>Email: {userData.email}</p>
+            <p>Email: {user.email}</p>
+            <p>Credits: {user.credits}</p>
           </div>
         </div>
       )}
