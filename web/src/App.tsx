@@ -73,7 +73,7 @@ function App() {
               <Link to="/">
                 <span className="text-xl font-bold">
                   Interview Simulator AI
-                  <span className="badge badge-neutral ml-3">v23.10.0</span>
+                  <span className="badge badge-neutral ml-3">1.0.0</span>
                 </span>{" "}
               </Link>
             </div>
