@@ -52,7 +52,22 @@ export async function handler(event: any, context: any, callback: any) {
         },
         ExpressionAttributeValues: marshall({
             ":questions": gptJson.questions,
-            ":status": "QUESTIONS_GENERATED",
+            ":status": "READY",
+        }),
+    }));
+
+    // remove credit from user
+    await dynamodb.send(new UpdateItemCommand({
+        TableName: Table.users.tableName,
+        Key: marshall({
+            userId: userId,
+        }),
+        UpdateExpression: "SET #credits = #credits - :credits",
+        ExpressionAttributeNames: {
+            "#credits": "credits",
+        },
+        ExpressionAttributeValues: marshall({
+            ":credits": 1,
         }),
     }));
 

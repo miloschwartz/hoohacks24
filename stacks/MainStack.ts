@@ -31,7 +31,7 @@ export function MainStack({ stack }: any) {
                     "chat-completion": {
                         function: {
                             handler: "packages/functions/src/chat-completion.handler",
-                            bind: [OPENAI_API_KEY, interviewTable],
+                            bind: [OPENAI_API_KEY, interviewTable, userTable],
                             permissions: ["dynamodb:*"],
                             timeout: 240,
                         }
@@ -47,6 +47,7 @@ export function MainStack({ stack }: any) {
                 bind: [userTable, interviewTable, eventBus]
             }
         },
+        customDomain: "api.interviewsimulatorai.com",
         routes: {
             "GET /": "packages/functions/src/auth.handler",
             "GET /session": "packages/functions/src/session.handler",
@@ -65,6 +66,7 @@ export function MainStack({ stack }: any) {
         path: "web",
         buildCommand: "npm run build",
         buildOutput: "dist",
+        customDomain: "interviewsimulatorai.com",
         environment: {
             VITE_APP_API_URL: api.url,
         },

@@ -10,25 +10,42 @@ import { UserContext } from "./App";
 import * as model from "../../model";
 
 interface RouterProps {
-  user: model.UserSession | null;
+  user: {
+    userContext: model.UserSession | null;
+    setUserContext: React.Dispatch<
+      React.SetStateAction<model.UserSession | null>
+    >;
+  };
 }
 
-function Router({ user }: RouterProps) {
+function Router({ user: { userContext, setUserContext } }: RouterProps) {
   return (
     <>
-      <UserContext.Provider value={user}>
+      <UserContext.Provider value={{ userContext, setUserContext }}>
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/start" element={<Start />}></Route>
           <Route
+            path="/profile"
             element={
-              <ProtectedRoute user={user}>
-                <Route path="/profile" element={<Profile />}></Route>
-                <Route path="/history" element={<History />}></Route>
-                <Route
-                  path="/interview/:interviewId"
-                  element={<Interview />}
-                ></Route>
+              <ProtectedRoute user={userContext}>
+                <Profile />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/history"
+            element={
+              <ProtectedRoute user={userContext}>
+                <History />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/interview/:interviewId"
+            element={
+              <ProtectedRoute user={userContext}>
+                <Interview />
               </ProtectedRoute>
             }
           ></Route>

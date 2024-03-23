@@ -22,7 +22,8 @@ export const handler = AuthHandler({
                         userId: claims.sub,
                         email: claims.email,
                         picture: claims.picture,
-                        name: claims.given_name
+                        name: claims.given_name,
+                        credits: 1
                     })
                 }));
 

@@ -1,17 +1,18 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { TextractClient, AnalyzeDocumentCommand } from "@aws-sdk/client-textract";
 import * as parser from "lambda-multipart-parser";
 import { EventBridgeClient, PutEventsCommand } from "@aws-sdk/client-eventbridge";
 import { EventBus } from "sst/node/event-bus";
-import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
+import { DynamoDBClient, GetItemCommand, PutItemCommand } from '@aws-sdk/client-dynamodb';
 import * as uuid from "uuid";
+import * as model from "../../../model";
 import { Table } from "sst/node/table";
 import { useSession } from "sst/node/auth";
 import { ApiHandler } from "sst/node/api";
-import { marshall } from "@aws-sdk/util-dynamodb";
+import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 
 export const handler = ApiHandler(async (event) => {
     const session = useSession();
+    const dynamo = new DynamoDBClient({});
 
     // Check user is authenticated
     if (session.type !== "user") {
@@ -19,6 +20,36 @@ export const handler = ApiHandler(async (event) => {
             statusCode: 401,
             body: JSON.stringify({
                 message: "Not authenticated",
+                event,
+            }),
+        }
+    }
+
+    // get user from table
+    const userRes = await dynamo.send(new GetItemCommand({
+        TableName: Table.users.tableName,
+        Key: marshall({
+            userId: session.properties.userID,
+        })
+    }));
+
+    if (!userRes.Item) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({
+                message: "User not found",
+                event,
+            }),
+        }
+    }
+
+    const user = unmarshall(userRes.Item) as model.UserSession;
+
+    if (user.credits < 1) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({
+                message: "Not enough credits",
                 event,
             }),
         }
@@ -92,7 +123,6 @@ export const handler = ApiHandler(async (event) => {
     };
 
     // add record to table
-    const dynamo = new DynamoDBClient({});
     await dynamo.send(new PutItemCommand({
         TableName: Table.interviews.tableName,
         Item: marshall({

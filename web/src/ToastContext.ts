@@ -8,6 +8,7 @@ interface ToastContextProps {
 const defaultToastContextValue: ToastContextProps = {
     open: (content: model.Toast) => {
         console.warn("ToastContext: open method was called without a provider.");
+        const placeholder = content;
     }
 };
 

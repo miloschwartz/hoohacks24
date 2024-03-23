@@ -17,11 +17,11 @@ body {
     margin-left: auto;
     margin-right: auto;
     align-items: center;
-    margin-top: 8rem;
+    margin-top: 6rem;
 }
 
 .form-container {
     display: flex;
     flex-direction: column;
-    max-width: 600px;
+    width: 600px;
 }
