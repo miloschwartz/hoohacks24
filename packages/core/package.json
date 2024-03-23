@@ -1,0 +1,17 @@
+{
+  "name": "@ai-interview-simulator/core",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "sst bind vitest",
+    "typecheck": "tsc -noEmit"
+  },
+  "devDependencies": {
+    "vitest": "^1.4.0",
+    "@types/node": "^20.11.30",
+    "sst": "^2.41.4"
+  },
+  "dependencies": {
+    "zod": "^3.22.4"
+  }
+}
