@@ -2,9 +2,12 @@ import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import * as model from "../../model";
-import Home from "./Home";
-import Start from "./Start";
-import Profile from "./Profile";
+import Home from "./pages/Home";
+import Start from "./pages/Start";
+import Profile from "./pages/Profile";
+import NotFound from "./pages/NotFound";
+import Interview from "./pages/Interview";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export const UserContext = React.createContext<model.UserSession | null>(null);
 
@@ -63,9 +66,9 @@ function App() {
       <div className="container mx-auto">
         <div className="navbar bg-base-100">
           <div className="flex-1">
-            <a className="btn btn-ghost normal-case text-xl">
-              AI Interview Simulator
-            </a>
+            <Link to="/">
+              <span className="text-xl font-bold">Interview Simulator</span>
+            </Link>
           </div>
           {userData ? (
             <div className="flex-none gap-2">
@@ -82,10 +85,10 @@ function App() {
                 </label>
                 <ul
                   tabIndex={0}
-                  className="mt-3 z-[1] p-2 shadow menu dropdown-content bg-neutral rounded-box w-52"
+                  className="mt-3 z-[1] p-2 shadow menu dropdown-content bg-base-200 rounded-box w-52"
                 >
                   <li>
-                    <a onClick={() => signOut()}>Logout</a>
+                    <a onClick={() => signOut()}>Sign out</a>
                   </li>
                   <li>
                     <Link to="/profile">Profile</Link>
@@ -108,7 +111,23 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/start" element={<Start />}></Route>
-          <Route path="/profile" element={<Profile />}></Route>
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute user={userData}>
+                <Profile />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/interview/:interviewId"
+            element={
+              <ProtectedRoute user={userData}>
+                <Interview />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </UserContext.Provider>
     </>

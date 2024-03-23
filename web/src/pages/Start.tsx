@@ -1,19 +1,15 @@
-import { useContext, useState } from "react";
-import UploadResume from "./components/UploadResume/UploadResume";
-import axios from "axios";
-import { UserContext, apiClient } from "./App";
+import { useState } from "react";
+import UploadResume from "../components/UploadResume/UploadResume";
+import { apiClient } from "../App";
+import { useNavigate } from "react-router-dom";
 
 function Start() {
   const [jobDescription, setJobDescription] = useState<string | null>(null);
-  const [resumeText, setResumeText] = useState<string | null>(null);
   const [jobTitle, setJobTitle] = useState<string | null>(null);
   const [interviewType, setInterviewType] = useState<string>("Behaviorial");
-  const [ocrProgress, setOcrProgress] = useState<number>(0);
-  const userData = useContext(UserContext);
-
-  function ocrLoading() {
-    return ocrProgress > 0 && ocrProgress < 100;
-  }
+  const [generateLoading, setGenerateLoading] = useState<boolean>(false);
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -38,7 +34,7 @@ function Start() {
             </select>
           </div>
 
-          <div>
+          <div className="mb-2">
             <label htmlFor="job-title" className="label">
               Job Title
             </label>
@@ -51,9 +47,9 @@ function Start() {
             />
           </div>
 
-          <span className="font-bold text-xl mb-4 mt-10">
+          <label htmlFor="job-description" className="label">
             Job Listing or Description
-          </span>
+          </label>
           <textarea
             className="textarea textarea-bordered"
             id="job-description"
@@ -69,23 +65,8 @@ function Start() {
           <span className="font-bold text-xl mb-4 mt-10">Upload Resume</span>
           <div id="resume-upload">
             <UploadResume
-              onUpload={async (file) => {
-                setOcrProgress(0);
-                setResumeText(null);
-
-                // TODO: send file to OCR server in lambda
-                const reader = new FileReader();
-
-                reader.onloadend = async () => {
-                  const base64data = reader.result;
-                  // convert to base64 string
-                  const res = await apiClient.post("/ocr", base64data, {
-                    headers: {
-                      "Content-Type": "application/base64",
-                    },
-                  });
-                };
-                reader.readAsDataURL(file);
+              onUpload={async (data) => {
+                setResumeFile(data);
               }}
             ></UploadResume>
           </div>
@@ -96,22 +77,44 @@ function Start() {
 
           <button
             className="btn btn-primary ml-auto mt-10"
-            disabled={
-              !resumeText ||
-              !jobDescription ||
-              !jobTitle ||
-              !interviewType ||
-              ocrLoading()
-            }
-            onClick={() => {
-              // log all data
-              console.log("resumeText", resumeText);
-              console.log("jobDescription", jobDescription);
-              console.log("jobTitle", jobTitle);
-              console.log("interviewType", interviewType);
+            disabled={generateLoading}
+            onClick={async () => {
+              setGenerateLoading(true);
+
+              const formData = new FormData();
+              formData.append("file", resumeFile as Blob);
+              formData.append("jobTitle", jobTitle as string);
+              formData.append("jobDescription", jobDescription as string);
+              formData.append("interviewType", interviewType);
+              const genRes = await apiClient.post(
+                "/generate-interview",
+                formData,
+                {
+                  headers: {},
+                }
+              );
+
+              if (genRes.data.interivewId) {
+                setGenerateLoading(false);
+                console.error("no interview id was provided");
+                return;
+              }
+
+              const poll = setInterval(async () => {
+                const res = await apiClient.get(
+                  `/get-interview/${genRes.data.interviewId}`,
+                  {}
+                );
+
+                if (res.data.status === "QUESTIONS_GENERATED") {
+                  clearInterval(poll);
+                  setGenerateLoading(false);
+                  navigate(`/interview/${genRes.data.interviewId}`);
+                }
+              }, 1000);
             }}
           >
-            {ocrLoading() ? (
+            {generateLoading ? (
               <span className="loading loading-spinner loading-sm"></span>
             ) : null}
             Generate Interview
