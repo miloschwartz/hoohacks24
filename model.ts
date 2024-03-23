@@ -9,12 +9,17 @@ export type UserSession = {
 export type Interview = {
     interviewId: string;
     userId: string;
-    created: string;
+    created: string; // iso string 
+    completed: string;  // iso string
     status: InterviewStatus;
-    questions: string[];
-    answers: string[];
-    answerFeedback: string[];
+    questions: Question[];
     overallFeedback: string;
+}
+
+export type Question = {
+    question: string;
+    answer: string;
+    feedback: string;
 }
 
 export enum InterviewStatus {

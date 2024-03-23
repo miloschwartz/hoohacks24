@@ -5,8 +5,9 @@ import { UserContext, apiClient } from "../App";
 import QuestionsBeingGeneraterated from "../components/QuestionsBeingGenerated";
 import InterviewReady from "../components/InterviewReady";
 import Loading from "../components/Loading";
+import Question from "../components/Question";
 
-function Interview() {
+function InterviewStatus() {
   const [loading, setLoading] = useState(true);
   const [interview, setInterview] = useState<model.Interview | null>(null);
 
@@ -50,12 +51,24 @@ function Interview() {
     };
   }, []);
 
-  const renderStatus = (status: string) => {
+  const beginInterview = () => {
+    setInterview((interview) => {
+      if (interview) {
+        return { ...interview, status: model.InterviewStatus.IN_PROGRESS };
+      }
+      return interview;
+    });
+    // TODO: Update intersection status via POST
+  };
+
+  const renderInterviewState = (status: string) => {
     switch (status) {
       case "GENERATING_QUESTIONS":
         return <QuestionsBeingGeneraterated />;
       case "READY":
-        return <InterviewReady />;
+        return <InterviewReady onBeginInterview={beginInterview} />;
+      case "IN_PROGRESS":
+        return <Question interview={interview!} />;
     }
   };
 
@@ -63,38 +76,7 @@ function Interview() {
     return <Loading />;
   }
 
-  return (
-    <>
-      {interview && (
-        <div className="content-container">
-          <div className="small-container">
-            <ul className="steps mb-10 w-full">
-              <li className="step step-primary">Provide Info</li>
-              <li
-                className={`step ${
-                  interview.status === "GENERATING_QUESTIONS" ||
-                  interview.status === "READY"
-                    ? "step-primary"
-                    : ""
-                }`}
-              >
-                Generate
-              </li>
-              <li
-                className={`step ${
-                  interview.status === "READY" ? "step-primary" : ""
-                }`}
-              >
-                Interview
-              </li>
-              <li className="step">Get Feedback</li>
-            </ul>
-            {renderStatus(interview.status)}
-          </div>
-        </div>
-      )}
-    </>
-  );
+  return <>{interview && renderInterviewState(interview.status)}</>;
 }
 
-export default Interview;
+export default InterviewStatus;

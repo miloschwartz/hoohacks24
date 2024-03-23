@@ -1,0 +1,158 @@
+{
+  "interviews": [
+    {
+      "created": "2023-10-24T04:13:35.759Z",
+      "questions": [
+        "Can you describe in more details the single-page app you migrated and how it improved customer engagement by 10%?",
+        "Can you tell me more about the product tours you architected with React? How did it impact customer adoption?",
+        "Can you speak more about your experience in developing the front end for a product recommendation engine? What kind of technologies and methodologies were involved?",
+        "You mentioned overhauling the UI for an internal tool to speed up refunds. What challenges did you face and how did you overcome them?",
+        "What was your experience working with another developer to implement RESTful APIs in Django? How did you coordinate your work?",
+        "You've used Selenium to build unit testing infrastructure for a client application. Can you explain the process and the challenges you faced?",
+        "Regarding your role as a Front End Web Designer in Boston. You mentioned maintaining, developing, and designing the public website for all 5 states on a weekly basis. How was that experience?",
+        "Can you explain how you designed the assessment forms that cut processing time by 30%? What kind of techniques did you use?"
+      ],
+      "interviewId": "5fe598a1-a61a-4fce-8f60-053373712f61",
+      "userId": "102433864204064592672",
+      "status": "READY"
+    },
+    {
+      "created": "2023-10-23T21:21:10.785Z",
+      "questions": [
+        "Can you describe your experience with front-end development, especially involving JavaScript and HTML/CSS?",
+        "What strategies do you typically employ to ensure a robust and user-friendly UI/UX design?",
+        "Can you provide an example of a time you had to solve a complex problem during a development project?",
+        "How have you worked with other team members, such as data scientists, to implement features in past roles?",
+        "Could you elaborate on your experience building RESTful APIs, particularly in Django?",
+        "You mentioned implementing unit testing infrastructure with Selenium. Could you share more details about that experience and its impact?",
+        "How do you approach database design and security, especially with regards to user information?",
+        "What specific steps have you taken in your previous roles to optimize website performance and improve user engagement?",
+        "Can you discuss a project where you converted a multi-page UX into a single-page application? What impact did this have on the user experience?",
+        "You mentioned overhauling the UI for an internal tool in a past role. Could you tell me more about that project and its outcomes?"
+      ],
+      "interviewId": "1cbeffdb-edbd-4071-b8ad-0930db503dec",
+      "userId": "102433864204064592672",
+      "status": "READY"
+    },
+    {
+      "created": "2023-10-23T03:54:37.005Z",
+      "questions": [
+        "Can you describe a time when you had to adapt your lesson plan last minute? How did you handle it and what was the outcome?",
+        "Tell me about a time when you had a difficult relationship with a student or a parent. How did you handle it?",
+        "How have you used communication to enhance a student's learning? Could you share a specific example?",
+        "Can you describe a situation where you have made a significant positive impact on a student's personal development?",
+        "Tell me about a time when you had to deal with a major safety issue in your classroom. What steps did you take to resolve it?",
+        "Has it ever been necessary for you to mediate a conflict in your class? Can you share how you approached resolving it?",
+        "Can you provide an example of a lesson that you planned which had direct ties to leading an ethical life or demonstrating responsible citizenship?"
+      ],
+      "interviewId": "e2e2308c-51aa-4eb2-9d3c-b21ce6cd5a86",
+      "userId": "102433864204064592672",
+      "status": "READY"
+    },
+    {
+      "created": "2023-10-23T03:53:43.264Z",
+      "questions": [
+        "Can you please provide specific examples of how you have upheld the mission of 'inspiring, enabling, and empowering students to meet high academic standards' in your past teaching roles?",
+        "Have you ever faced a situation where a student was not able to meet academic standards? How did you handle it?",
+        "Can you provide an example of a situation where you needed to manage a classroom or instructional setting effectively, and what were the steps you took to ensure it was managed well?",
+        "What strategies do you typically use to communicate effectively with parents or guardians about their child's progress?",
+        "Tell us about a time you had to plan and assess instructional material for your classes. How did you ensure they were aligned with the students’ learning abilities?",
+        "Can you tell me about a time when your human relations skills were put to the test with a student or a parent, and how did you handle it?",
+        "Safety is important in this role, can you give an example of a measure you've implemented or an incident where you had to ensure the safety of your students?"
+      ],
+      "interviewId": "abc923d7-9e53-45d0-b3b1-ca51852a6d08",
+      "userId": "102433864204064592672",
+      "status": "READY"
+    },
+    {
+      "created": "2023-10-23T01:41:18.543Z",
+      "questions": [
+        "Could you provide us with examples of APIs you've designed and what challenges you faced while designing them?",
+        "It seems like you've done a lot of work remotely. How do you tackle communication challenges while working remotely, and how do you collaborate with remote colleagues effectively?",
+        "We see that you have a good background in debugging. Can you elaborate on a complex issue you've debugged and how did you approach resolving it?",
+        "How much familiarity do you have with Git version control system and can you share how you've used it in your previous positions?",
+        "What have you found to be the most complex or challenging aspect of server handling? How have you managed this in your previous roles?",
+        "According to your resume, you have experience with Ruby, Python, Java & PHP. Can you rank these languages with respect to your proficiency and provide examples of projects where you used them?",
+        "How do you approach optimizing applications and can you provide an example where you've successfully done this in the past?",
+        "Can you explain how you test new website features? What sort of methods or tools do you use to ensure quality?"
+      ],
+      "interviewId": "a5ba2311-67bf-42d3-9101-4f7b8f466047",
+      "userId": "102433864204064592672",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "created": "2023-10-23T01:32:05.914Z",
+      "questions": [
+        "What sparked your interest in backend development?",
+        "Can you describe a challenging project you've worked on and how you overcame obstacles?",
+        "How would you rate your proficiency in SQL Server and .NET? Give examples of where you used these tools.",
+        "In your CV, you mention that you have 'in-depth training in systems architecture'. Could you expand a bit more on this?",
+        "How would you deal with a situation where an API you're developing is not returning the expected output?",
+        "You've mentioned experience with debugging. Can you discuss a specific instance where this was a critical skill?",
+        "How do you ensure your code is both clean and secure?",
+        "You have skill in Django & Ruby on Rails in your CV. Can you describe a project where you utilized both?",
+        "Can you share about a time when you made a significant positive impact on a project through your backend development skills?",
+        "What strategies do you employ for staying updated on new languages, frameworks, and tools in backend development?"
+      ],
+      "interviewId": "f44165ca-839f-4d07-9e4e-128e99a6a7e0",
+      "userId": "102433864204064592672",
+      "status": "READY"
+    },
+    {
+      "created": "2023-10-23T00:51:04.495Z",
+      "questions": [
+        "Can you elaborate on your role as Investment Banking Summer Analyst at your recent job and how it prepared you for this position?",
+        "Can you tell us more about any large scale projects or achievements you had in your previous company that would highlight your skills applicable to this role?",
+        "How have your studies and previous work experience in mechanical engineering prepared you for this role?",
+        "Can you talk about a financial model that you have developed and how it created value for a project or action?",
+        "You worked as an Insurance Intern before, what were your key learning experiences that you believe can be useful in this role?",
+        "As a student senator, how did you handle conflicts or disagreements among team members when making financial decisions?",
+        "Can you describe a time when you had to convince others of your ideas or plans? How did you ensure you got their buy-in?",
+        "You have a background in studying Macro/Microeconomics. Can you tell me how these could help forecast business trends?",
+        "In your experience, what is the most significant aspect, financial or otherwise, that hustles to an organisation's long term success?",
+        "Can you elaborate on your ability to proficiently navigate multiple languages? How have you leveraged your language skills in professional settings?",
+        "You have a significant amount of volunteer experience. How does your commitment to volunteering impact your professional work?"
+      ],
+      "interviewId": "1813cf27-9536-4444-9a21-364aa63901d9",
+      "userId": "102433864204064592672",
+      "status": "READY"
+    },
+    {
+      "created": "2023-10-22T21:45:29.910Z",
+      "interviewId": "5209bdd1-a304-4992-82ca-148c02b073b0",
+      "userId": "102433864204064592672",
+      "status": "GENERATING_QUESTIONS"
+    },
+    {
+      "created": "2023-10-22T21:17:12.788Z",
+      "questions": [
+        "Can you elaborate on your role and responsibilities during your tenure as an Investment Banking Summer Analyst?",
+        "You have mentioned that you worked on building a full-blown 3-statement standalone operating model. Can you delve a little deeper into this process and its outcomes?",
+        "During your term as an Insurance Intern, you exceeded company targets by 20%. How did you achieve this?",
+        "Explain your experience with preparing and working with monthly customer pipeline reports.",
+        "Can you give more details about your activities as the Student Government Senator and how it improved your skill sets for this role?",
+        "Can you talk about your fundraising efforts and experience in organizing community service events?",
+        "What are the practical applications of your proficiency in Mandarin and French in this role?",
+        "How have your favorite business books influenced your approach to your professional work?"
+      ],
+      "interviewId": "fdc05792-282a-44c7-a743-a5a749957f36",
+      "userId": "102433864204064592672",
+      "status": "COMPLETED"
+    },
+    {
+      "created": "2023-10-22T20:57:51.137Z",
+      "questions": [
+        "Can you describe your experience with Angular, React, or Vue and their ecosystems? Which do you prefer, and why?",
+        "How do you approach integrating NPM libraries and modularizing code for reuse across multiple projects?",
+        "Can you give an example of a project where you successfully used Bootstrap or Material Design for responsive design?",
+        "How have you used configuration management and source code control like Git or SVN in your previous projects?",
+        "You worked as a Senior Front End Developer. Can you explain how collaboration with UX and design teams was done to ensure the user experience determines design choices?",
+        "Could you share some experiences you had with complex problems in your previous roles and how you solved them using modern web application development processes?",
+        "Are there specific practices or tools you use to ensure brand consistency throughout the design process?"
+      ],
+      "interviewId": "52de24f4-6263-4466-b382-ab809147e168",
+      "userId": "102433864204064592672",
+      "status": "READY"
+    }
+  ]
+}

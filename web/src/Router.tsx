@@ -3,7 +3,8 @@ import Home from "./pages/Home";
 import Start from "./pages/Start";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
-import Interview from "./pages/Interview";
+import Question from "./components/Question";
+import InterviewStatus from "./pages/InterviewStatus";
 import ProtectedRoute from "./components/ProtectedRoute";
 import History from "./pages/History";
 import { UserContext } from "./App";
@@ -45,7 +46,15 @@ function Router({ user: { userContext, setUserContext } }: RouterProps) {
             path="/interview/:interviewId"
             element={
               <ProtectedRoute user={userContext}>
-                <Interview />
+                <InterviewStatus />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/interview/:interviewId/:questionIdx"
+            element={
+              <ProtectedRoute user={userContext}>
+                <Question />
               </ProtectedRoute>
             }
           ></Route>
