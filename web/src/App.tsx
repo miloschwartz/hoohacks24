@@ -129,7 +129,7 @@ function App() {
           <Router user={{ userContext: user, setUserContext: setUser }} />
         </div>
 
-        <footer className="footer items-center p-4 bg-neutral text-neutral-content mt-10">
+        <footer className="footer items-center p-4 bg-base-300 text-dark mt-10">
           <aside className="items-center grid-flow-col">
             <p>Milo Schwartz - 2023</p>
           </aside>

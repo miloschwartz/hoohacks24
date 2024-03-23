@@ -1,3 +1,5 @@
+import { BsFillLightbulbFill } from "react-icons/bs";
+
 function QuestionsBeingGeneraterated() {
   return (
     <>
@@ -13,7 +15,6 @@ function QuestionsBeingGeneraterated() {
           </div>
         </div>
       </div>
-
       <div className="card w-100 bg-base-300 shadow-xl mt-10">
         <div className="card-body">
           <h2 className="card-title">Tip</h2>

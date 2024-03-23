@@ -19,6 +19,7 @@ function Interview() {
   }
 
   useEffect(() => {
+    let poll: NodeJS.Timeout;
     const fetchData = async () => {
       const res = await apiClient.get<model.Interview>(
         `/get-interview/${interviewId}`,
@@ -29,7 +30,7 @@ function Interview() {
       setLoading(false);
 
       if (res.data.status === "GENERATING_QUESTIONS") {
-        const poll = setInterval(async () => {
+        poll = setInterval(async () => {
           const res = await apiClient.get(`/get-interview/${interviewId}`, {});
 
           if (res.data.status === "READY") {
@@ -43,6 +44,10 @@ function Interview() {
     };
 
     fetchData();
+
+    return () => {
+      clearInterval(poll);
+    };
   }, []);
 
   const renderStatus = (status: string) => {
@@ -62,14 +67,14 @@ function Interview() {
     <>
       {interview && (
         <div className="content-container">
-          <div className="form-container">
+          <div className="small-container">
             <ul className="steps mb-10 w-full">
               <li className="step step-primary">Provide Info</li>
               <li
                 className={`step ${
                   interview.status === "GENERATING_QUESTIONS" ||
                   interview.status === "READY"
-                    ? "step step-primary"
+                    ? "step-primary"
                     : ""
                 }`}
               >
@@ -77,7 +82,7 @@ function Interview() {
               </li>
               <li
                 className={`step ${
-                  interview.status === "READY" ? "step step-primary" : ""
+                  interview.status === "READY" ? "step-primary" : ""
                 }`}
               >
                 Interview

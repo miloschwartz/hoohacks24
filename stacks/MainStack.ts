@@ -19,18 +19,17 @@ export function MainStack({ stack }: any) {
         primaryIndex: { partitionKey: "interviewId", sortKey: "userId" },
         globalIndexes: {
             userId: { partitionKey: "userId", sortKey: "interviewId" },
-            created: { partitionKey: "created", sortKey: "interviewId" },
         }
     });
 
     const eventBus = new EventBus(stack, "bus", {
         rules: {
-            "chat-completion": {
+            "generate-questions": {
                 pattern: { source: ["generate-interview"] },
                 targets: {
-                    "chat-completion": {
+                    "generate-questions": {
                         function: {
-                            handler: "packages/functions/src/chat-completion.handler",
+                            handler: "packages/functions/src/generate-questions.handler",
                             bind: [OPENAI_API_KEY, interviewTable, userTable],
                             permissions: ["dynamodb:*"],
                             timeout: 240,
@@ -59,6 +58,7 @@ export function MainStack({ stack }: any) {
                 }
             },
             "GET /get-interview/{interviewId}": "packages/functions/src/get-interview.handler",
+            "GET /get-interviews": "packages/functions/src/get-interviews.handler",
         },
     });
 

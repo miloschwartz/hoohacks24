@@ -10,11 +10,18 @@ export type Interview = {
     interviewId: string;
     userId: string;
     created: string;
-    status: "GENERATING_QUESTIONS" | "READY" | "IN_PROGRESS" | "COMPLETED";
+    status: InterviewStatus;
     questions: string[];
     answers: string[];
     answerFeedback: string[];
     overallFeedback: string;
+}
+
+export enum InterviewStatus {
+    GENERATING_QUESTIONS = "GENERATING_QUESTIONS",
+    READY = "READY",
+    IN_PROGRESS = "IN_PROGRESS",
+    COMPLETED = "COMPLETED",
 }
 
 export type Toast = {

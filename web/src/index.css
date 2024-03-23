@@ -20,8 +20,20 @@ body {
     margin-top: 6rem;
 }
 
-.form-container {
+.small-container {
     display: flex;
     flex-direction: column;
     width: 600px;
+}
+
+.medium-container {
+    display: flex;
+    flex-direction: column;
+    width: 900px;
+}
+
+.large-container {
+    display: flex;
+    flex-direction: column;
+    width: 1200px;
 }

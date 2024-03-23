@@ -11,7 +11,8 @@ function Start() {
   const [generateLoading, setGenerateLoading] = useState<boolean>(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
 
-  const user = useContext(UserContext);
+  const userContext = useContext(UserContext);
+  const user = userContext?.userContext;
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -53,7 +54,7 @@ function Start() {
   return (
     <>
       <div className="content-container">
-        <div className="form-container">
+        <div className="small-container">
           {/* <div className="text-center mb-10">
             <span className="font-bold text-4xl">Provide Information</span>
           </div> */}
