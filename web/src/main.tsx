@@ -8,11 +8,11 @@ import ToastProvider from "./ToastProvider.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <ToastProvider>
-    <React.StrictMode>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </React.StrictMode>
+    {/* <React.StrictMode> */}
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+    {/* </React.StrictMode> */}
   </ToastProvider>
 );
 

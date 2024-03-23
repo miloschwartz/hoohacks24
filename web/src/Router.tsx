@@ -3,32 +3,48 @@ import Home from "./pages/Home";
 import Start from "./pages/Start";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
-import Interview from "./pages/Interview";
+import InterviewStatus from "./pages/InterviewStatus";
 import ProtectedRoute from "./components/ProtectedRoute";
 import History from "./pages/History";
 import { UserContext } from "./App";
 import * as model from "../../model";
 
 interface RouterProps {
-  user: model.UserSession | null;
+  user: {
+    userContext: model.UserSession | null;
+    setUserContext: React.Dispatch<
+      React.SetStateAction<model.UserSession | null>
+    >;
+  };
 }
 
-function Router({ user }: RouterProps) {
+function Router({ user: { userContext, setUserContext } }: RouterProps) {
   return (
     <>
-      <UserContext.Provider value={user}>
+      <UserContext.Provider value={{ userContext, setUserContext }}>
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/start" element={<Start />}></Route>
           <Route
             element={
-              <ProtectedRoute user={user}>
-                <Route path="/profile" element={<Profile />}></Route>
-                <Route path="/history" element={<History />}></Route>
-                <Route
-                  path="/interview/:interviewId"
-                  element={<Interview />}
-                ></Route>
+              <ProtectedRoute user={userContext}>
+                <Profile />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/history"
+            element={
+              <ProtectedRoute user={userContext}>
+                <History />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/interview/:interviewId"
+            element={
+              <ProtectedRoute user={userContext}>
+                <InterviewStatus />
               </ProtectedRoute>
             }
           ></Route>
