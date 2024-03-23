@@ -8,12 +8,17 @@ import { useNavigate } from "react-router-dom";
 
 function History() {
   const [pageNo, setPageNo] = useState(1);
+  const [nextTokens, setNextTokens] = useState<string[]>([]);
+  const [end, setEnd] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
+  const [loadingPage, setLoadingPage] = useState(false);
+  const [limit, setLimit] = useState(10);
   const [interviews, setInterviews] = useState<model.Interview[]>([]);
+
   const toast = useToast();
   const context = useContext(UserContext);
-  const user = context?.userContext;
   const navigate = useNavigate();
+  const user = context?.userContext;
 
   useEffect(() => {
     if (!user) {
@@ -21,9 +26,16 @@ function History() {
     }
     const getInterviews = () => {
       apiClient
-        .get("/get-interviews", {})
+        .get("/get-interviews", {
+          params: {
+            limit: limit,
+          },
+        })
         .then((res) => {
-          setInterviews(res.data.interviews);
+          setInterviews(res.data.items);
+          if (res.data.nextToken) {
+            setNextTokens([res.data.nextToken]);
+          }
         })
         .catch((err) => {
           toast.open({
@@ -39,9 +51,54 @@ function History() {
     getInterviews();
   }, []);
 
-  const nextPage = async () => {};
+  const fetchInterviews = async (token: string, direction: string) => {
+    if (!user) {
+      return;
+    }
 
-  const prevPage = async () => {};
+    setLoadingPage(true);
+
+    apiClient
+      .get("/get-interviews", {
+        params: {
+          limit: limit,
+          nextToken: token,
+        },
+      })
+      .then((res) => {
+        setInterviews(res.data.items);
+        if (res.data.nextToken) {
+          setNextTokens([...nextTokens, res.data.nextToken]);
+          setEnd(false);
+        } else {
+          setEnd(true);
+        }
+        setPageNo(direction === "next" ? pageNo + 1 : pageNo - 1);
+      })
+      .catch((err) => {
+        toast.open({
+          text: `Failed to get interviews: ${err.message}`,
+          type: "error",
+        });
+      })
+      .finally(() => {
+        setLoadingPage(false);
+      });
+  };
+
+  const nextPage = async () => {
+    const token = nextTokens[pageNo - 1];
+    if (token) {
+      fetchInterviews(token, "next");
+    }
+  };
+
+  const prevPage = async () => {
+    const token = nextTokens[pageNo - 2];
+    if (token) {
+      fetchInterviews(token, "prev");
+    }
+  };
 
   const formatDate = (date: string) => {
     return moment(date).format("MMMM Do YYYY, h:mm:ss a");
@@ -86,7 +143,7 @@ function History() {
     }
   };
 
-  if (loading) {
+  if (loading || !interviews) {
     return <Loading />;
   }
 
@@ -96,11 +153,8 @@ function History() {
         <div className="medium-container">
           <div className="card w-100 bg-base-300 shadow-xl mt-10">
             <div className="card-body">
-              <h2 className="card-title">History</h2>
-
               <div className="overflow-x-auto">
-                <table className="table">
-                  {/* head */}
+                <table className="table text-center">
                   <thead>
                     <tr>
                       <th></th>
@@ -134,7 +188,7 @@ function History() {
                               navigate(`/interview/${interview.interviewId}`);
                             }}
                           >
-                            View
+                            {getButtonText(interview.status)}
                           </button>
                         </td>
                       </tr>
@@ -142,17 +196,27 @@ function History() {
                   </tbody>
                 </table>
               </div>
-              <div className="card-actions ml-auto mt-10">
-                <div className="join">
-                  <button className="join-item btn" onClick={() => prevPage()}>
-                    «
-                  </button>
-                  <button className="join-item btn">{pageNo}</button>
-                  <button className="join-item btn" onClick={() => nextPage()}>
-                    »
-                  </button>
+              {nextTokens.length > 0 && (
+                <div className="card-actions ml-auto mt-10">
+                  <div className="join">
+                    <button
+                      className="join-item btn"
+                      onClick={() => prevPage()}
+                      disabled={pageNo === 1}
+                    >
+                      «
+                    </button>
+                    <button className="join-item btn">{pageNo}</button>
+                    <button
+                      className="join-item btn"
+                      onClick={() => nextPage()}
+                      disabled={end}
+                    >
+                      »
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

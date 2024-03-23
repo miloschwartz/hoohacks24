@@ -131,7 +131,7 @@ function App() {
 
         <footer className="footer items-center p-4 bg-base-300 text-dark mt-10">
           <aside className="items-center grid-flow-col">
-            <p>Milo Schwartz - 2023</p>
+            <p>Milo Schwartz &middot; 2023</p>
           </aside>
           <nav className="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
             <a href="https://www.linkedin.com/in/milo-schwartz-46002a24a/">

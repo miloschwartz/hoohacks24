@@ -19,6 +19,7 @@ export function MainStack({ stack }: any) {
         primaryIndex: { partitionKey: "interviewId", sortKey: "userId" },
         globalIndexes: {
             userId: { partitionKey: "userId", sortKey: "interviewId" },
+            created: { partitionKey: "userId", sortKey: "created" },
         }
     });
 
