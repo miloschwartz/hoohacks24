@@ -1,48 +1,86 @@
-import { Auth, StaticSite, Api, Table } from "sst/constructs";
+import { StackContext, Auth, StaticSite, Api, Table, Bucket, Config, EventBus } from "sst/constructs";
 
 export function MainStack({ stack }: any) {
-  const userTable = new Table(stack, "users", {
-    fields: {
-      userId: "string",
-    },
-    primaryIndex: { partitionKey: "userId" },
-  });
+    const OPENAI_API_KEY = new Config.Secret(stack, "OPENAI_API_KEY");
 
-  const api = new Api(stack, "api", {
-    defaults: {
-      function: {
-        bind: [userTable],
-      },
-    },
-    routes: {
-      "GET /": "packages/functions/src/auth.handler",
-      "GET /session": "packages/functions/src/session.handler",
-      "POST /ocr": "packages/functions/src/ocr.handler",
-    },
-  });
+    const userTable = new Table(stack, "users", {
+        fields: {
+            userId: "string",
+        },
+        primaryIndex: { partitionKey: "userId" },
+    });
 
-  const site = new StaticSite(stack, "site", {
-    path: "web",
-    buildCommand: "npm run build",
-    buildOutput: "dist",
-    environment: {
-      VITE_APP_API_URL: api.url,
-    },
-  });
+    const interviewTable = new Table(stack, "interviews", {
+        fields: {
+            interviewId: "string",
+            userId: "string",
+            created: "string",
+        },
+        primaryIndex: { partitionKey: "interviewId", sortKey: "userId" },
+        globalIndexes: {
+            userId: { partitionKey: "userId", sortKey: "interviewId" },
+            created: { partitionKey: "created", sortKey: "interviewId" },
+        }
+    });
 
-  const auth = new Auth(stack, "auth", {
-    authenticator: {
-      handler: "packages/functions/src/auth.handler",
-      bind: [site],
-    },
-  });
-  auth.attach(stack, {
-    api,
-    prefix: "/auth",
-  });
+    const eventBus = new EventBus(stack, "bus", {
+        rules: {
+            "chat-completion": {
+                pattern: { source: ["generate-interview"] },
+                targets: {
+                    "chat-completion": {
+                        function: {
+                            handler: "packages/functions/src/chat-completion.handler",
+                            bind: [OPENAI_API_KEY, interviewTable],
+                            permissions: ["dynamodb:*"],
+                            timeout: 240,
+                        }
+                    }
+                }
+            }
+        }
+    });
 
-  stack.addOutputs({
-    ApiEndpoint: api.url,
-    SiteURL: site.url,
-  });
+    const api = new Api(stack, "api", {
+        defaults: {
+            function: {
+                bind: [userTable, interviewTable, eventBus]
+            }
+        },
+        routes: {
+            "GET /": "packages/functions/src/auth.handler",
+            "GET /session": "packages/functions/src/session.handler",
+            "POST /generate-interview": {
+                function: {
+                    handler: "packages/functions/src/generate-interview.handler",
+                    permissions: ["textract:*", "eventbridge:*", "dynamodb:*"],
+                    timeout: 60,
+                }
+            },
+            "GET /get-interview/{interviewId}": "packages/functions/src/get-interview.handler",
+        },
+    });
+
+    const site = new StaticSite(stack, "site", {
+        path: "web",
+        buildCommand: "npm run build",
+        buildOutput: "dist",
+        environment: {
+            VITE_APP_API_URL: api.url,
+        },
+    });
+    const auth = new Auth(stack, "auth", {
+        authenticator: {
+            handler: "packages/functions/src/auth.handler",
+            bind: [site]
+        },
+    });
+    auth.attach(stack, {
+        api,
+        prefix: "/auth",
+    });
+    stack.addOutputs({
+        ApiEndpoint: api.url,
+        SiteURL: site.url,
+    });
 }

@@ -27,7 +27,7 @@ export const handler = AuthHandler({
                 }));
 
                 return Session.parameter({
-                    redirect: process.env.IS_LOCAL ? "http://localhost:5173/" : StaticSite.site.url,
+                    redirect: process.env.IS_LOCAL ? "http://localhost:5173/" : `${StaticSite.site.url}/}`,
                     type: "user",
                     properties: {
                         userID: claims.sub,
