@@ -15,3 +15,9 @@ export type Interview = {
     answerFeedback: string[];
     overallFeedback: string;
 }
+
+export type Toast = {
+    id?: string;
+    text: string;
+    type: "success" | "error" | "warning";
+}
