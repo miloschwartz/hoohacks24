@@ -44,7 +44,7 @@ export async function handler(event: any, context: any, callback: any) {
         Key: marshall({
             interviewId: interviewId,
             userId: userId,
-        }),
+        }, {removeUndefinedValues: true}),
         UpdateExpression: "SET #questions = :questions, #status = :status",
         ExpressionAttributeNames: {
             "#questions": "questions",
@@ -57,6 +57,8 @@ export async function handler(event: any, context: any, callback: any) {
                 }
             }),
             ":status": "READY",
+        }, {
+            removeUndefinedValues: true
         }),
     }));
 

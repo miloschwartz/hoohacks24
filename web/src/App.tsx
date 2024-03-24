@@ -14,7 +14,7 @@ interface UserContextProps {
 }
 
 export const UserContext = React.createContext<UserContextProps | undefined>(
-  undefined
+  undefined,
 );
 
 export const apiClient = axios.create({
@@ -32,9 +32,8 @@ function App() {
       const token = localStorage.getItem("session");
       if (token) {
         apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        const { data: user } = await apiClient.get<model.UserSession>(
-          "/session"
-        );
+        const { data: user } =
+          await apiClient.get<model.UserSession>("/session");
         if (user) {
           setUser(user);
         }
@@ -73,7 +72,7 @@ function App() {
               <Link to="/">
                 <span className="text-xl font-bold">
                   Interview Simulator AI
-                  <span className="badge badge-neutral ml-3">1.0.0</span>
+                  <span className="badge badge-neutral ml-3">v1.0.0</span>
                 </span>{" "}
               </Link>
             </div>
