@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
+import {Trans, useTranslation} from "react-i18next";
+import LanguageSwitcher from "../components/LanguageSwitcher";
 
 function Home() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   return (
@@ -32,7 +35,7 @@ function Home() {
       </div>
       <div className="bg-base-100 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:text-center">
+          <div className="lg:tegxt-center">
             <h2 className="text-base text-primary font-semibold tracking-wide uppercase">
               <Trans>Features</Trans>
             </h2>

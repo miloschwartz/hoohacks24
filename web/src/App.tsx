@@ -7,6 +7,7 @@ import Loading from "./components/Loading";
 import "./i18n"
 import { Trans } from 'react-i18next';
 import { BsGithub, BsLinkedin } from "react-icons/bs";
+import LanguageSwitcher from "./components/LanguageSwitcher";
 
 interface UserContextProps {
   userContext: model.UserSession | null;
