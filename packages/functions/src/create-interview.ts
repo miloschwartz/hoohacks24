@@ -129,7 +129,11 @@ export const handler = ApiHandler(async (event) => {
             interviewId: interviewId,
             userId: session.properties.userID,
             created: new Date().toISOString(),
-            status: "GENERATING_QUESTIONS",
+            status: model.InterviewStatus.GENERATING_QUESTIONS,
+            jobTitle: fields.jobTitle,
+            jobDescription: fields.jobDescription,
+            interviewType: fields.interviewType,
+            resumeText: resumeText,
         })
     }));
 

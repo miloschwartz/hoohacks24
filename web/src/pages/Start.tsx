@@ -2,11 +2,14 @@ import { useContext, useState } from "react";
 import { UserContext, apiClient } from "../App";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../useToast";
+import * as model from "../../../model";
 
 function Start() {
   const [jobDescription, setJobDescription] = useState<string | null>(null);
   const [jobTitle, setJobTitle] = useState<string | null>(null);
-  const [interviewType, setInterviewType] = useState<string>("Behaviorial");
+  const [interviewType, setInterviewType] = useState<string>(
+    model.InterviewType.BEHAVIORAL
+  );
   const [generateLoading, setGenerateLoading] = useState<boolean>(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
 
@@ -80,8 +83,12 @@ function Start() {
                     value={interviewType}
                     onChange={(e) => setInterviewType(e.target.value)}
                   >
-                    <option>Behaviorial</option>
-                    <option>Technical</option>
+                    <option value={model.InterviewType.BEHAVIORAL}>
+                      Behaviorial
+                    </option>
+                    <option value={model.InterviewType.TECHNICAL}>
+                      Technical
+                    </option>
                   </select>
                 </div>
 

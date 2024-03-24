@@ -7,6 +7,8 @@ import InterviewReady from "../components/InterviewReady";
 import Loading from "../components/Loading";
 import React from "react";
 import Interview from "../components/Interview";
+import FeedbackBeingGenerated from "../components/FeedbackBeingGenerated";
+import Feedback from "../components/Feedback";
 
 interface InterviewContextProps {
   interview: model.Interview;
@@ -90,8 +92,10 @@ function InterviewStatus() {
         return <InterviewReady />;
       case model.InterviewStatus.IN_PROGRESS:
         return <Interview />;
-      case model.InterviewStatus.COMPLETED:
-        return <div>Interview Complete</div>;
+      case model.InterviewStatus.GENERATING_FEEDBACK:
+        return <FeedbackBeingGenerated />;
+      case model.InterviewStatus.FEEDBACK_READY:
+        return <Feedback />;
     }
   };
 

@@ -106,39 +106,45 @@ function History() {
 
   const getBadgeColor = (status: model.InterviewStatus) => {
     switch (status) {
-      case "GENERATING_QUESTIONS":
+      case model.InterviewStatus.GENERATING_QUESTIONS:
         return "badge-neutral";
-      case "READY":
+      case model.InterviewStatus.READY:
         return "badge-success";
-      case "IN_PROGRESS":
+      case model.InterviewStatus.IN_PROGRESS:
         return "badge-primary";
-      case "COMPLETED":
+      case model.InterviewStatus.GENERATING_FEEDBACK:
         return "badge-info";
+      case model.InterviewStatus.FEEDBACK_READY:
+        return "badge-secondary";
     }
   };
 
   const getButtonText = (status: model.InterviewStatus) => {
     switch (status) {
-      case "GENERATING_QUESTIONS":
+      case model.InterviewStatus.GENERATING_QUESTIONS:
         return "View";
-      case "READY":
+      case model.InterviewStatus.READY:
         return "Begin";
-      case "IN_PROGRESS":
+      case model.InterviewStatus.IN_PROGRESS:
         return "Resume";
-      case "COMPLETED":
+      case model.InterviewStatus.GENERATING_FEEDBACK:
+        return "View Results";
+      case model.InterviewStatus.FEEDBACK_READY:
         return "View Results";
     }
   };
 
   const renderStatus = (status: model.InterviewStatus) => {
     switch (status) {
-      case "GENERATING_QUESTIONS":
+      case model.InterviewStatus.GENERATING_QUESTIONS:
         return "Generating Interview";
-      case "READY":
+      case model.InterviewStatus.READY:
         return "Ready";
-      case "IN_PROGRESS":
+      case model.InterviewStatus.IN_PROGRESS:
         return "In Progress";
-      case "COMPLETED":
+      case model.InterviewStatus.GENERATING_FEEDBACK:
+        return "Generating Feedback";
+      case model.InterviewStatus.FEEDBACK_READY:
         return "Completed";
     }
   };

@@ -4,6 +4,8 @@ import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 import * as model from "../../../model";
 import { ApiHandler } from "sst/node/api";
 import { useSession } from "sst/node/auth";
+import { EventBridgeClient, PutEventsCommand } from "@aws-sdk/client-eventbridge";
+import { EventBus } from "sst/node/event-bus";
 
 export const handler = ApiHandler(async (event) => {
     const session = useSession();
@@ -82,7 +84,7 @@ export const handler = ApiHandler(async (event) => {
     }
 
 
-    interview.status = model.InterviewStatus.COMPLETED;
+    interview.status = model.InterviewStatus.GENERATING_FEEDBACK;
 
     // update the item
     await dynamo.send(new UpdateItemCommand({
@@ -100,6 +102,18 @@ export const handler = ApiHandler(async (event) => {
         }),
     }));
 
+    // send over eventbridge
+    const eventBridge = new EventBridgeClient({});
+    await eventBridge.send(new PutEventsCommand({
+        Entries: [
+            {
+                EventBusName: EventBus.bus.eventBusName,
+                Source: "finish-interview",
+                DetailType: "finish-interview",
+                Detail: JSON.stringify({ interview }),
+            }
+        ]
+    }));
 
     return {
         statusCode: 200,

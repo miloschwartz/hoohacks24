@@ -49,6 +49,19 @@ export function MainStack({ stack }: any) {
                         }
                     }
                 }
+            },
+            "generate-feedback": {
+                pattern: { source: ["finish-interview"] },
+                targets: {
+                    "generate-feedback": {
+                        function: {
+                            handler: "packages/functions/src/generate-feedback.handler",
+                            bind: [OPENAI_API_KEY, interviewTable, userTable],
+                            permissions: ["dynamodb:*"],
+                            timeout: 600,
+                        }
+                    }
+                }
             }
         }
     });

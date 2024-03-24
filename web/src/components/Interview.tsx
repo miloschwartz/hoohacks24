@@ -140,7 +140,7 @@ function Interview() {
       .post(`/finish-interview/${interview.interviewId}`)
       .then(() => {
         console.log("finished interview");
-        interview.status = model.InterviewStatus.COMPLETED;
+        interview.status = model.InterviewStatus.GENERATING_FEEDBACK;
         setInterview({ ...interview });
       })
       .catch((err) => {
@@ -171,6 +171,7 @@ function Interview() {
         ? answered.length
         : answered.length + 1;
     currentQuestion = endSlice - 1;
+    console.log(currentQuestion);
     const questions = interview.questions.slice(0, endSlice);
     return questions.map((q, idx) => {
       return (
@@ -213,14 +214,15 @@ function Interview() {
   };
 
   const renderActions = () => {
-    if (interview.status === model.InterviewStatus.COMPLETED) {
+    if (interview.status === model.InterviewStatus.GENERATING_FEEDBACK) {
       return (
         <button className="btn btn-primary" disabled>
           Interview Complete
         </button>
       );
     }
-    if (curAnswer && currentQuestion === interview.questions.length - 1) {
+    // if (curAnswer && currentQuestion === interview.questions.length - 1) {
+    if (currentQuestion === interview.questions.length - 1) {
       return (
         <>
           <button
