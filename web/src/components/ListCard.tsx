@@ -5,7 +5,7 @@ interface ListCardProps {
   items: string[];
 }
 
-function ListCard({ title, items }: ListCardProps) {
+function ListCard({  items }: ListCardProps) {
   return (
     <>
       <div className="card bg-base-100 h-full flex flex-col">
