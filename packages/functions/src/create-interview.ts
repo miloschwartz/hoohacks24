@@ -91,7 +91,7 @@ export const handler = ApiHandler(async (event) => {
 
     console.log("Got resume text");
 
-    let prompt = "Return a list of 7 questions to ask a candidate for a " + fields.jobTitle + " position. The job description is as follows: " + fields.jobDescription + ". The interview type is " + fields.interviewType + ".";
+    let prompt = "Return a list of NO LESS THAN SEVEN QUESTIONS and NO MORE THAN TEN QUESTIONS to ask a candidate for a " + fields.jobTitle + " position. The job description is as follows: " + fields.jobDescription + ". The interview type is " + fields.interviewType + ".";
     if (uploadedResume) {
         prompt = + " The candidate's resume is as follows: " + resumeText + ".";
     }
@@ -106,7 +106,7 @@ export const handler = ApiHandler(async (event) => {
         properties: {
             questions: {
                 type: "array",
-                description: "A list of questions to ask the candidate",
+                description: "A list of 7-10 questions to ask the candidate",
                 items: {
                     type: "string"
                 }

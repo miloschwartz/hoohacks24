@@ -4,6 +4,7 @@ import { useReactMediaRecorder } from "react-media-recorder";
 import { apiClient } from "../App";
 import { useToast } from "../useToast";
 import moment from "moment";
+import * as model from "../../../model";
 
 function Interview() {
   const { interview, setInterview } = useContext(InterviewContext);
@@ -13,6 +14,7 @@ function Interview() {
   const toast = useToast();
   const [startTime, setStartTime] = useState(-1);
   const [endTime, setEndTime] = useState(-1);
+  const [curAnswer, setCurAnswer] = useState<string | null>(null);
 
   const { status, startRecording, stopRecording, mediaBlobUrl, clearBlobUrl } =
     useReactMediaRecorder({
@@ -27,7 +29,7 @@ function Interview() {
       chatContainerRef.current.scrollTop =
         chatContainerRef.current.scrollHeight;
     }
-  }, [interview]);
+  }, [interview, curAnswer]);
 
   useEffect(() => {
     const transcribe = async () => {
@@ -40,14 +42,7 @@ function Interview() {
         formData.append("questionIndex", currentQuestion.toString());
         formData.append("interviewId", interview.interviewId);
 
-        if (startTime !== -1 && endTime !== -1) {
-          formData.append("start", startTime.toString());
-          formData.append("end", endTime.toString());
-        }
-
         clearBlobUrl();
-        setStartTime(-1);
-        setEndTime(-1);
 
         setTranscribeLoading(true);
         await apiClient
@@ -57,15 +52,7 @@ function Interview() {
           .then((res) => {
             if (res && res.data.transcript) {
               const transcript = res.data.transcript;
-              const questions = interview.questions.map((q, idx) => {
-                if (idx === currentQuestion) {
-                  q.answer = transcript;
-                  q.start = startTime;
-                  q.end = endTime;
-                }
-                return q;
-              });
-              setInterview({ ...interview, questions });
+              setCurAnswer(transcript);
             }
           })
           .catch((err) => {
@@ -109,8 +96,64 @@ function Interview() {
     return result.trim();
   }
 
+  const acceptAnswer = () => {
+    if (!curAnswer) {
+      return;
+    }
+    const questions = interview.questions;
+    const question = questions[currentQuestion];
+    question.answer = curAnswer;
+    question.start = startTime;
+    question.end = endTime;
+
+    setInterview({ ...interview, questions: questions });
+    setCurAnswer(null);
+    setStartTime(-1);
+    setEndTime(-1);
+
+    apiClient
+      .post(`/add-answer/${interview.interviewId}`, {
+        start: question.start,
+        end: question.end,
+        answer: question.answer,
+        questionIndex: currentQuestion,
+      })
+      .then(() => {
+        console.log("saved answer");
+      })
+      .catch((err) => {
+        toast.open({
+          type: "error",
+          text: `${err.response.data.message}`,
+        });
+      });
+  };
+
+  const rejectAnswer = () => {
+    setCurAnswer(null);
+    setStartTime(-1);
+    setEndTime(-1);
+  };
+
+  const finishInterview = () => {
+    apiClient
+      .post(`/finish-interview/${interview.interviewId}`)
+      .then(() => {
+        console.log("finished interview");
+        interview.status = model.InterviewStatus.COMPLETED;
+        setInterview({ ...interview });
+      })
+      .catch((err) => {
+        toast.open({
+          type: "error",
+          text: `${err.response.data.message}`,
+        });
+      });
+  };
+
   const onStart = () => {
     startRecording();
+    setCurAnswer(null);
     setStartTime(new Date().getTime());
   };
 
@@ -121,7 +164,7 @@ function Interview() {
 
   const renderQuestions = () => {
     const answered = interview.questions.filter(
-      (q) => q.answer && q.answer !== "" && q.question
+      (q) => q.answer && q.answer !== "" && q.question && q.start && q.end
     );
     const endSlice =
       answered.length === interview.questions.length
@@ -158,12 +201,70 @@ function Interview() {
               )}
             </div>
           )}
+          {curAnswer && !q.answer && (
+            <div className="chat chat-end">
+              <div className="chat-header mb-1">You</div>
+              <div className="chat-bubble chat-bubble-primary">{curAnswer}</div>
+            </div>
+          )}
         </div>
       );
     });
   };
 
   const renderActions = () => {
+    if (interview.status === model.InterviewStatus.COMPLETED) {
+      return (
+        <button className="btn btn-primary" disabled>
+          Interview Complete
+        </button>
+      );
+    }
+    if (curAnswer && currentQuestion === interview.questions.length - 1) {
+      return (
+        <>
+          <button
+            className="btn"
+            onClick={() => {
+              rejectAnswer();
+            }}
+          >
+            Try Again
+          </button>
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              acceptAnswer();
+              finishInterview();
+            }}
+          >
+            Finish Interview
+          </button>
+        </>
+      );
+    }
+    if (curAnswer) {
+      return (
+        <>
+          <button
+            className="btn"
+            onClick={() => {
+              rejectAnswer();
+            }}
+          >
+            Try Again
+          </button>
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              acceptAnswer();
+            }}
+          >
+            Next Question
+          </button>
+        </>
+      );
+    }
     if (transcribeLoading) {
       return (
         <button className="btn" disabled>
@@ -175,16 +276,15 @@ function Interview() {
     if (status === "recording") {
       return (
         <button className="btn btn-error" onClick={() => onStop()}>
-          End Response
-        </button>
-      );
-    } else {
-      return (
-        <button className="btn btn-success" onClick={() => onStart()}>
-          Start Response
+          End Recording
         </button>
       );
     }
+    return (
+      <button className="btn btn-success" onClick={() => onStart()}>
+        Start Recording
+      </button>
+    );
   };
 
   return (

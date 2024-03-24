@@ -80,6 +80,8 @@ export function MainStack({ stack }: any) {
                 }
             },
             "POST /begin-interview/{interviewId}": "packages/functions/src/begin-interview.handler",
+            "POST /add-answer/{interviewId}": "packages/functions/src/add-answer.handler",
+            "POST /finish-interview/{interviewId}": "packages/functions/src/finish-interview.handler",
         },
     });
 

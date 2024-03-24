@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import UploadResume from "../components/UploadResume/UploadResume";
 import { UserContext, apiClient } from "../App";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../useToast";
@@ -116,16 +115,24 @@ function Start() {
               <span className="font-bold text-xl mb-4 mt-10">
                 Upload Resume
               </span>
-              <div id="resume-upload">
-                <UploadResume
-                  onUpload={async (data) => {
-                    setResumeFile(data);
+              <div className="form-control w-100" id="resume-upload">
+                <input
+                  type="file"
+                  multiple={false}
+                  className="file-input file-input-bordered w-full"
+                  accept=".pdf,.png,.jpeg,.jpg"
+                  onChange={(e) => {
+                    const files = e.target.files;
+                    if (files) {
+                      setResumeFile(files[0]);
+                    }
                   }}
-                ></UploadResume>
+                />
               </div>
               <label htmlFor="resume-upload" className="label-text mt-2">
                 Upload a pdf, png, or jpeg of your resume to help the AI ask
-                personalized questions. Your resume will not be stored.
+                personalized questions. Your resume will not be stored on our
+                servers.
               </label>
 
               <div className="card-actions justify-end">

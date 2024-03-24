@@ -143,30 +143,10 @@ export const handler = ApiHandler(async (event) => {
 
     console.log('Transcribed audio');
 
-    const index = parseInt(fields.questionIndex);
-    interview.questions[index].answer = response.data;
-    if (start && end) {
-        interview.questions[index].start = parseInt(start);
-        interview.questions[index].end = parseInt(end);
-    }
-
-    // update the item
-    await dynamo.send(new UpdateItemCommand({
-        TableName: Table.interviews.tableName,
-        Key: marshall({
-            userId: user.userId,
-            interviewId,
-        }),
-        UpdateExpression: 'SET questions = :questions',
-        ExpressionAttributeValues: marshall({
-            ':questions': interview.questions
-        }),
-    }));
-
     return {
         statusCode: 200,
         body: JSON.stringify({
-            answer: response.data,
+            transcript: response.data,
         }),
     }
 });
