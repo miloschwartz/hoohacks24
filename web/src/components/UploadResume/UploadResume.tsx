@@ -2,27 +2,27 @@ import "./UploadResume.css";
 import { useState } from "react";
 
 interface UploadFilesProps {
-  onUpload: (file: File) => void;
+  onUpload: (file: File | null) => void;
 }
 
 function UploadResume({ onUpload }: UploadFilesProps) {
   const [fileName, setFileName] = useState<string>("");
   const [resume, setResume] = useState<string | null>(null);
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-
-    const files = e.dataTransfer.files;
-    if (files.length) {
-      setResume(URL.createObjectURL(files[0]));
-      onUpload(files[0]);
-      setFileName(files[0].name);
-    }
-  };
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-  };
+  // const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  //   e.preventDefault();
+  //
+  //   const files = e.dataTransfer.files;
+  //   if (files.length) {
+  //     setResume(URL.createObjectURL(files[0]));
+  //     onUpload(files[0]);
+  //     setFileName(files[0].name);
+  //   }
+  // };
+  //
+  // const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  //   e.preventDefault();
+  // };
 
   return (
     <>

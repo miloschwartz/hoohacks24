@@ -1,35 +1,36 @@
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import * as model from "../../model";
-import Home from "./Home";
-import Start from "./Start";
-import Profile from "./Profile";
+import Router from "./Router";
 
 export const UserContext = React.createContext<model.UserSession | null>(null);
 
 export const apiClient = axios.create({
-  baseURL: `${import.meta.env.VITE_APP_API_URL}`, // Your API base URL
+  baseURL: `${import.meta.env.VITE_APP_API_URL}`,
 });
 
 function App() {
   const [userData, setUserData] = useState<model.UserSession | null>(null);
   const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
-  const getSession = async () => {
-    const token = localStorage.getItem("session");
-    if (token) {
-      apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      const { data: user } = await apiClient.get<model.UserSession>("/session");
-      if (user) {
-        setUserData(user);
-      }
-    }
-    setLoading(false);
-  };
-
   useEffect(() => {
+    const getSession = async () => {
+      const token = localStorage.getItem("session");
+      if (token) {
+        apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        const { data: user } = await apiClient.get<model.UserSession>(
+          "/session"
+        );
+        if (user) {
+          setUserData(user);
+        }
+      }
+      setLoading(false);
+    };
+
     getSession();
   }, []);
 
@@ -63,9 +64,9 @@ function App() {
       <div className="container mx-auto">
         <div className="navbar bg-base-100">
           <div className="flex-1">
-            <a className="btn btn-ghost normal-case text-xl">
-              AI Interview Simulator
-            </a>
+            <Link to="/">
+              <span className="text-xl font-bold">Interview Simulator</span>
+            </Link>
           </div>
           {userData ? (
             <div className="flex-none gap-2">
@@ -82,13 +83,16 @@ function App() {
                 </label>
                 <ul
                   tabIndex={0}
-                  className="mt-3 z-[1] p-2 shadow menu dropdown-content bg-neutral rounded-box w-52"
+                  className="mt-3 z-[1] p-2 shadow menu dropdown-content bg-base-200 rounded-box w-52"
                 >
                   <li>
-                    <a onClick={() => signOut()}>Logout</a>
+                    <Link to="/history">History</Link>
                   </li>
                   <li>
                     <Link to="/profile">Profile</Link>
+                  </li>
+                  <li>
+                    <a onClick={() => signOut()}>Sign out</a>
                   </li>
                 </ul>
               </div>
@@ -98,19 +102,13 @@ function App() {
               href={`${import.meta.env.VITE_APP_API_URL}/auth/google/authorize`}
               rel="noreferrer"
             >
-              <button className="btn btn-primary">Sign In</button>
+              <button className="btn">Sign In</button>
             </a>
           )}
         </div>
       </div>
 
-      <UserContext.Provider value={userData}>
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/start" element={<Start />}></Route>
-          <Route path="/profile" element={<Profile />}></Route>
-        </Routes>
-      </UserContext.Provider>
+      <Router user={userData} />
     </>
   );
 }

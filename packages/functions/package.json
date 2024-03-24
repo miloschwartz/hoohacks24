@@ -7,14 +7,22 @@
     "typecheck": "tsc -noEmit"
   },
   "devDependencies": {
-    "@types/node": "^20.8.7",
     "@types/aws-lambda": "^8.10.125",
-    "vitest": "^0.34.6",
-    "sst": "^2.31.0"
+    "@types/busboy": "^1.5.2",
+    "@types/node": "^20.8.7",
+    "@types/uuid": "^9.0.6",
+    "sst": "^2.31.0",
+    "vitest": "^0.34.6"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.433.0",
+    "@aws-sdk/client-eventbridge": "^3.433.0",
+    "@aws-sdk/client-s3": "^3.433.0",
     "@aws-sdk/client-textract": "^3.433.0",
-    "@aws-sdk/util-dynamodb": "^3.433.0"
+    "@aws-sdk/s3-request-presigner": "^3.433.0",
+    "@aws-sdk/util-dynamodb": "^3.433.0",
+    "lambda-multipart-parser": "^1.0.1",
+    "openai": "^4.12.4",
+    "uuid": "^9.0.1"
   }
 }

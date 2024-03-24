@@ -1,19 +1,54 @@
 import { useContext, useState } from "react";
-import UploadResume from "./components/UploadResume/UploadResume";
-import axios from "axios";
-import { UserContext, apiClient } from "./App";
+import UploadResume from "../components/UploadResume/UploadResume";
+import { UserContext, apiClient } from "../App";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "../useToast";
 
 function Start() {
   const [jobDescription, setJobDescription] = useState<string | null>(null);
-  const [resumeText, setResumeText] = useState<string | null>(null);
   const [jobTitle, setJobTitle] = useState<string | null>(null);
   const [interviewType, setInterviewType] = useState<string>("Behaviorial");
-  const [ocrProgress, setOcrProgress] = useState<number>(0);
-  const userData = useContext(UserContext);
+  const [generateLoading, setGenerateLoading] = useState<boolean>(false);
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
 
-  function ocrLoading() {
-    return ocrProgress > 0 && ocrProgress < 100;
-  }
+  const user = useContext(UserContext);
+  const navigate = useNavigate();
+  const toast = useToast();
+
+  const generateInterview = async () => {
+    setGenerateLoading(true);
+
+    const formData = new FormData();
+    formData.append("file", resumeFile as Blob);
+    formData.append("jobTitle", jobTitle as string);
+    formData.append("jobDescription", jobDescription as string);
+    formData.append("interviewType", interviewType);
+    const genRes = await apiClient.post("/generate-interview", formData, {
+      headers: {},
+    });
+
+    if (genRes.data.interivewId) {
+      setGenerateLoading(false);
+      toast.open({
+        type: "error",
+        text: "Something went wrong. Please try again.",
+      });
+      return;
+    }
+
+    const poll = setInterval(async () => {
+      const res = await apiClient.get(
+        `/get-interview/${genRes.data.interviewId}`,
+        {}
+      );
+
+      if (res.data.status === "QUESTIONS_GENERATED") {
+        clearInterval(poll);
+        setGenerateLoading(false);
+        navigate(`/interview/${genRes.data.interviewId}`);
+      }
+    }, 3000);
+  };
 
   return (
     <>
@@ -38,7 +73,7 @@ function Start() {
             </select>
           </div>
 
-          <div>
+          <div className="mb-2">
             <label htmlFor="job-title" className="label">
               Job Title
             </label>
@@ -51,9 +86,9 @@ function Start() {
             />
           </div>
 
-          <span className="font-bold text-xl mb-4 mt-10">
+          <label htmlFor="job-description" className="label">
             Job Listing or Description
-          </span>
+          </label>
           <textarea
             className="textarea textarea-bordered"
             id="job-description"
@@ -69,23 +104,8 @@ function Start() {
           <span className="font-bold text-xl mb-4 mt-10">Upload Resume</span>
           <div id="resume-upload">
             <UploadResume
-              onUpload={async (file) => {
-                setOcrProgress(0);
-                setResumeText(null);
-
-                // TODO: send file to OCR server in lambda
-                const reader = new FileReader();
-
-                reader.onloadend = async () => {
-                  const base64data = reader.result;
-                  // convert to base64 string
-                  const res = await apiClient.post("/ocr", base64data, {
-                    headers: {
-                      "Content-Type": "application/base64",
-                    },
-                  });
-                };
-                reader.readAsDataURL(file);
+              onUpload={async (data) => {
+                setResumeFile(data);
               }}
             ></UploadResume>
           </div>
@@ -94,28 +114,26 @@ function Start() {
             personalized questions. Your resume will not be stored.
           </label>
 
-          <button
-            className="btn btn-primary ml-auto mt-10"
-            disabled={
-              !resumeText ||
-              !jobDescription ||
-              !jobTitle ||
-              !interviewType ||
-              ocrLoading()
-            }
-            onClick={() => {
-              // log all data
-              console.log("resumeText", resumeText);
-              console.log("jobDescription", jobDescription);
-              console.log("jobTitle", jobTitle);
-              console.log("interviewType", interviewType);
-            }}
-          >
-            {ocrLoading() ? (
-              <span className="loading loading-spinner loading-sm"></span>
-            ) : null}
-            Generate Interview
-          </button>
+          {user ? (
+            <button
+              className="btn btn-primary ml-auto mt-10"
+              disabled={generateLoading}
+              onClick={async () => await generateInterview()}
+            >
+              {generateLoading ? (
+                <span className="loading loading-spinner loading-sm"></span>
+              ) : null}
+              Generate Interview
+            </button>
+          ) : (
+            <a
+              href={`${import.meta.env.VITE_APP_API_URL}/auth/google/authorize`}
+              rel="noreferrer"
+              className="ml-auto mt-10"
+            >
+              <button className="btn btn-primary">Sign In to Begin</button>
+            </a>
+          )}
         </div>
       </div>
     </>
