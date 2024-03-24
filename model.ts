@@ -13,11 +13,24 @@ export type Interview = {
     completed: string;  // iso string
     status: InterviewStatus;
     questions: Question[];
-    overallFeedback: string;
+    overallFeedback: OverallFeedbackInterview;
     jobTitle: string;
     jobDescription: string;
     interviewType: InterviewType;
     resumeText: string;
+    totalWordCount: number;
+    averageWordCount: number;
+    totalWordsPerMinute: number;
+    averageWordsPerMinute: number;
+    totalDuration: number;
+    averageDuration: number;
+}
+
+export type OverallFeedbackInterview = {
+    overallRating: Rating;
+    overallComments: string;
+    pros: string[];
+    cons: string[];
 }
 
 export enum InterviewType {
@@ -29,6 +42,9 @@ export type Question = {
     question: string;
     answer: string;
     feedback: QuestionFeedback;
+    duration: number;
+    totalWordCount: number;
+    wordsPerMinute: number;
     start: number;
     end: number;
 }
@@ -55,54 +71,75 @@ export type QuestionFeedback = {
     criticalThinkingInnovation: CriticalThinkingInnovation
     culturalContextualFit: CulturalContextualFit
     interpersonalDynamics: InterpersonalDynamics
-    overallFeedback: OverallFeedback
+    overallFeedback: OverallFeedbackQuestion
+}
+
+export enum QuestionFeedbackType {
+    CONTENT_QUALITY = "contentQuality",
+    STRUCTURE_ORGANIZATION = "structureOrganization",
+    PRESENTATION_DELIVERY = "presentationDelivery",
+    SUPPORT_JUSTIFICATION = "supportJustification",
+    CRITICAL_THINKING_INNOVATION = "criticalThinkingInnovation",
+    CULTURAL_CONTEXTUAL_FIT = "culturalContextualFit",
+    INTERPERSONAL_DYNAMICS = "interpersonalDynamics",
+    OVERALL_FEEDBACK = "overallFeedback",
 }
 
 export type ContentQuality = {
     relevance: Rating;
     depth: Rating;
     accuracy: Rating;
+    comments: string;
 }
 
 export type StructureOrganization = {
     clarity: Rating;
     flow: Rating;
     brevity: Rating;
+    comments: string;
 }
 
 export type PresentationDelivery = {
     confidence: Rating;
     articulation: Rating;
     engagement: Rating;
+    comments: string;
 }
 
 export type SupportJustification = {
     examples: Rating;
     dataBacked: Rating;
     referenceExperience: Rating;
+    comments: string;
 }
 
 export type CriticalThinkingInnovation = {
     insightfulness: Rating;
     problemSolving: Rating;
     creativity: Rating;
+    comments: string;
 }
 
 export type CulturalContextualFit = {
     alignmentValues: Rating;
     relevanceRole: Rating;
     awareness: Rating;
+    comments: string;
 }
 
 export type InterpersonalDynamics = {
     listeningSkills: Rating;
     adaptability: Rating;
     emotionalIntelligence: Rating;
+    comments: string;
 }
 
-export type OverallFeedback = {
+export type OverallFeedbackQuestion = {
+    comments: string;
     overallRating: Rating;
-    overallComments: string;
+    pros: string[];
+    cons: string[];
+    fillerWords: string[];
 }
 
 export enum Rating {

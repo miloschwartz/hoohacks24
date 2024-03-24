@@ -45,6 +45,10 @@ export async function handler(event: EventBridgeEvent, context: any, callback: a
                             description: "Are the statements or facts mentioned in the answer correct and verifiable?",
                             type: "string",
                             enum: ["VERY_LOW", "LOW", "MEDIUM", "HIGH", "VERY_HIGH"]
+                        },
+                        comments: {
+                            description: "Feedback on the content quality of the response: relevance, depth, and accuracy. Write in complete sentences, paragraph format. Pretend you are speaking directly to the candidate.",
+                            type: "string"
                         }
                     }
                 },
@@ -65,6 +69,10 @@ export async function handler(event: EventBridgeEvent, context: any, callback: a
                             description: "Is the answer concise, avoiding unnecessary information?",
                             type: "string",
                             enum: ["VERY_LOW", "LOW", "MEDIUM", "HIGH", "VERY_HIGH"]
+                        },
+                        comments: {
+                            description: "Feedback on the structure organization of the response: clarity, flow, and brevity. Write in complete sentences, paragraph format. Pretend you are speaking directly to the candidate.",
+                            type: "string"
                         }
                     }
                 },
@@ -85,6 +93,10 @@ export async function handler(event: EventBridgeEvent, context: any, callback: a
                             description: "Did the respondent engage the interviewer/audience with their response?",
                             type: "string",
                             enum: ["VERY_LOW", "LOW", "MEDIUM", "HIGH", "VERY_HIGH"]
+                        },
+                        comments: {
+                            description: "Feedback on the presentation delivery of the response: confidence, articulation, and engagement. Write in complete sentences, paragraph format. Pretend you are speaking directly to the candidate.",
+                            type: "string"
                         }
                     }
                 },
@@ -105,6 +117,10 @@ export async function handler(event: EventBridgeEvent, context: any, callback: a
                             description: "Did the respondent relate the answer to their own experiences or previous work?",
                             type: "string",
                             enum: ["VERY_LOW", "LOW", "MEDIUM", "HIGH", "VERY_HIGH"]
+                        },
+                        comments: {
+                            description: "Feedback on the support justification of the response: examples, data backed, and reference experience. Write in complete sentences, paragraph format. Pretend you are speaking directly to the candidate.",
+                            type: "string"
                         }
                     }
                 },
@@ -125,6 +141,10 @@ export async function handler(event: EventBridgeEvent, context: any, callback: a
                             description: "Is there evidence of original thought in the response?",
                             type: "string",
                             enum: ["VERY_LOW", "LOW", "MEDIUM", "HIGH", "VERY_HIGH"]
+                        },
+                        comments: {
+                            description: "Feedback on the critical thinking innovation of the response: insightfulness, problem solving, and creativity. Write in complete sentences, paragraph format. Pretend you are speaking directly to the candidate.",
+                            type: "string"
                         }
                     }
                 },
@@ -145,6 +165,10 @@ export async function handler(event: EventBridgeEvent, context: any, callback: a
                             description: "Does the respondent demonstrate knowledge of the context?",
                             type: "string",
                             enum: ["VERY_LOW", "LOW", "MEDIUM", "HIGH", "VERY_HIGH"]
+                        },
+                        comments: {
+                            description: "Feedback on the cultural and contextual fit of the response: alignment values, relevance to role, and awareness. Write in complete sentences, paragraph format. Pretend you are speaking directly to the candidate.",
+                            type: "string"
                         }
                     }
                 },
@@ -165,6 +189,10 @@ export async function handler(event: EventBridgeEvent, context: any, callback: a
                             description: "Did the respondent show empathy and understanding of the emotional context?",
                             type: "string",
                             enum: ["VERY_LOW", "LOW", "MEDIUM", "HIGH", "VERY_HIGH"]
+                        },
+                        comments: {
+                            description: "Feedback on the interpersonal dynamics of the response: listening skills, adaptability, and emotional intelligence. Write in complete sentences, paragraph format. Pretend you are speaking directly to the candidate.",
+                            type: "string"
                         }
                     }
                 },
@@ -176,10 +204,31 @@ export async function handler(event: EventBridgeEvent, context: any, callback: a
                             type: "string",
                             enum: ["VERY_LOW", "LOW", "MEDIUM", "HIGH", "VERY_HIGH"]
                         },
-                        overallComments: {
+                        comments: {
                             description: "Overall comments on the response. Write in complete sentences, paragraph format. Pretend you are speaking directly to the candidate.",
                             type: "string"
-                        }
+                        },
+                        pros: {
+                            description: "A list of what the candidate did well or pros?",
+                            type: "array",
+                            items: {
+                                type: "string"
+                            }
+                        },
+                        cons: {
+                            description: "A list of what the candidate did not do well or cons?",
+                            type: "array",
+                            items: {
+                                type: "string"
+                            }
+                        },
+                        fillerWords: {
+                            description: "A list filler words the candidate used in the response if any.",
+                            type: "array",
+                            items: {
+                                type: "string"
+                            }
+                        },
                     }
                 }
             }
@@ -212,6 +261,9 @@ export async function handler(event: EventBridgeEvent, context: any, callback: a
                 console.log("Got GPT data");
 
                 interview.questions[i].feedback = gptJson;
+                interview.questions[i].duration = calculateDurationOfResponse(interview.questions[i].start, interview.questions[i].end);
+                interview.questions[i].totalWordCount = calculateTotalWords(interview.questions[i].answer);
+                interview.questions[i].wordsPerMinute = calculateWordsSpokenPerMinute(interview.questions[i].answer, interview.questions[i].duration);
             })
             .catch((err) => {
                 console.log("Error calling OpenAI API");
@@ -223,18 +275,80 @@ export async function handler(event: EventBridgeEvent, context: any, callback: a
 
     await Promise.all(promises);
 
-    /*
-    TODO:
-    - generate overall feedback
-    - average time per answer
-    - average word count per answer
-    - words spoken per minute
-    - filler words
-    - sentiment analysis
-    - tone analysis
+    // generate overall feedback for interview using gpt
+    let overallPrompt = "Give a summary of the overall success of the candidate's interview performance. Pretend you are speaking to the candidate themselves.\n\nThe job title is: " + jobTitle + "\n\nThe job description is: " + jobDescription + "\n\nThe interview type is: " + interviewType;
+    for (let i = 0; i < interview.questions.length; i++) {
+        const question = interview.questions[i].question;
+        const answer = interview.questions[i].answer;
+        overallPrompt += "\n\nQuestion: " + question + "\n\nAnswer: " + answer;
+    }
+    const overallSchema = {
+        type: "object",
+        properties: {
+            overallRating: {
+                description: "Overall rating of the candidate's performance during the interview",
+                type: "string",
+                enum: ["VERY_LOW", "LOW", "MEDIUM", "HIGH", "VERY_HIGH"]
+            },
+            overallComments: {
+                description: "Overall comments on candidate's performance during the interview. Write in complete sentences, paragraph format. Pretend you are speaking directly to the candidate.",
+                type: "string"
+            },
+            pros: {
+                description: "A list of what the candidate did well or pros?",
+                type: "array",
+                items: {
+                    type: "string"
+                }
+            },
+            cons: {
+                description: "A list of what the candidate did not do well or cons?",
+                type: "array",
+                items: {
+                    type: "string"
+                }
+            }
+        }
+    }
 
-    - ability to enhance response
-    */
+    try {
+        const gptResponse = await openaiClient.chat.completions.create({
+            model: "gpt-4-0613",
+            messages: [
+                { role: "system", content: "You are a job interview coach helping an candidate analyze their overall interview performance." },
+                { role: "user", content: overallPrompt }
+            ],
+            functions: [{ name: "generate_overall_feedback", parameters: overallSchema }],
+            function_call: { name: "generate_overall_feedback" }
+        });
+
+        const gptData = gptResponse.choices[0].message.function_call?.arguments;
+        if (!gptData) {
+            console.log("No GPT data");
+            return;
+        }
+
+        const gptJson = JSON.parse(gptData);
+
+        interview.overallFeedback = gptJson;
+    } catch (err) {
+        console.log("Unable to generate overall feedback");
+        console.log(err);
+    }
+
+    const totalWordCount = interview.questions.reduce((acc, question) => acc + question.totalWordCount, 0);
+    const averageWordCount = totalWordCount / interview.questions.length;
+    const totalWordsPerMinute = interview.questions.reduce((acc, question) => acc + question.wordsPerMinute, 0);
+    const averageWordsPerMinute = totalWordsPerMinute / interview.questions.length;
+    const totalDuration = interview.questions.reduce((acc, question) => acc + question.duration, 0);
+    const averageDuration = totalDuration / interview.questions.length;
+
+    interview.totalWordCount = totalWordCount;
+    interview.averageWordCount = averageWordCount;
+    interview.totalWordsPerMinute = totalWordsPerMinute;
+    interview.averageWordsPerMinute = averageWordsPerMinute;
+    interview.totalDuration = totalDuration;
+    interview.averageDuration = averageDuration;
 
     const dynamo = new DynamoDBClient({});
     const interviewRes = await dynamo.send(new UpdateItemCommand({
@@ -243,19 +357,42 @@ export async function handler(event: EventBridgeEvent, context: any, callback: a
             userId: interview.userId,
             interviewId: interview.interviewId,
         }),
-        UpdateExpression: "set questions = :questions, #status = :status",
+        UpdateExpression: "set questions = :questions, #status = :status, totalWordCount = :totalWordCount, averageWordCount = :averageWordCount, totalWordsPerMinute = :totalWordsPerMinute, averageWordsPerMinute = :averageWordsPerMinute, totalDuration = :totalDuration, averageDuration = :averageDuration, overallFeedback = :overallFeedback",
         ExpressionAttributeNames: {
-            "#status": "status"
+            "#status": "status",
         },
         ExpressionAttributeValues: marshall({
             ":questions": interview.questions,
             ":status": model.InterviewStatus.FEEDBACK_READY,
+            ":totalWordCount": totalWordCount,
+            ":averageWordCount": averageWordCount,
+            ":totalWordsPerMinute": totalWordsPerMinute,
+            ":averageWordsPerMinute": averageWordsPerMinute,
+            ":totalDuration": totalDuration,
+            ":averageDuration": averageDuration,
+            ":overallFeedback": interview.overallFeedback,
         }),
     }));
 
     console.log("Updated interview with feedback");
 }
 
+function calculateTotalWords(text: string) {
+    return text.split(" ").length;
+}
+
+function calculateWordsSpokenPerMinute(text: string, time: number) {
+    // time is given in milliseconds
+    const minutes = time / 60000;
+    const words = text.split(" ").length;
+    const wordsPerMinute = words / minutes;
+    return wordsPerMinute;
+}
+
+function calculateDurationOfResponse(start: number, end: number) {
+    const duration = end - start;
+    return duration;
+}
 interface EventBridgeEvent {
     version: string;
     id: string;

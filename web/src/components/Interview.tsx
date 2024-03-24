@@ -136,12 +136,12 @@ function Interview() {
   };
 
   const finishInterview = () => {
+    interview.status = model.InterviewStatus.GENERATING_FEEDBACK;
+    setInterview({ ...interview, status: interview.status });
     apiClient
       .post(`/finish-interview/${interview.interviewId}`)
       .then(() => {
         console.log("finished interview");
-        interview.status = model.InterviewStatus.GENERATING_FEEDBACK;
-        setInterview({ ...interview });
       })
       .catch((err) => {
         toast.open({
@@ -217,7 +217,8 @@ function Interview() {
     if (interview.status === model.InterviewStatus.GENERATING_FEEDBACK) {
       return (
         <button className="btn btn-primary" disabled>
-          Interview Complete
+          Completing Interview{" "}
+          <span className="loading loading-spinner loading-sm"></span>
         </button>
       );
     }
