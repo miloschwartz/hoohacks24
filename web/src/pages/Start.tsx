@@ -26,7 +26,7 @@ function Start() {
     formData.append("interviewType", interviewType);
 
     await apiClient
-      .post("/generate-interview", formData, {
+      .post("/create-interview", formData, {
         headers: {},
       })
       .then((res) => {

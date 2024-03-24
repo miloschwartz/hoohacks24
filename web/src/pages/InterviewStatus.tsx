@@ -5,7 +5,7 @@ import { UserContext, apiClient } from "../App";
 import QuestionsBeingGeneraterated from "../components/QuestionsBeingGenerated";
 import InterviewReady from "../components/InterviewReady";
 import Loading from "../components/Loading";
-import Question from "../components/Question";
+import Question from "../components/Question/Question";
 
 function InterviewStatus() {
   const [loading, setLoading] = useState(true);
@@ -20,34 +20,51 @@ function InterviewStatus() {
   }
 
   useEffect(() => {
-    let poll: NodeJS.Timeout;
-    const fetchData = async () => {
-      const res = await apiClient.get<model.Interview>(
-        `/get-interview/${interviewId}`,
-        {}
-      );
+    let socket: WebSocket;
+    const createConnection = async () => {
+      const queryString = `subId=${user.userId}::${interviewId}`;
+      const endpint = `${
+        import.meta.env.VITE_WEBSOCKET_ENDPOINT
+      }?${queryString}`;
+      const socket = new WebSocket(endpint);
 
-      setInterview(res.data);
-      setLoading(false);
+      socket.onopen = () => {
+        console.log("connected to websocket");
+      };
 
-      if (res.data.status === "GENERATING_QUESTIONS") {
-        poll = setInterval(async () => {
-          const res = await apiClient.get(`/get-interview/${interviewId}`, {});
+      socket.onmessage = (e) => {
+        if (e && e.data) {
+          const data = JSON.parse(e.data);
+          console.log("interview updated");
+          setInterview((interview) => {
+            if (interview) {
+              return { ...interview, ...data };
+            }
+            return interview;
+          });
 
-          if (res.data.status === "READY") {
+          if (data.status === "READY") {
             const updatedUser = { ...user, credits: user.credits - 1 };
             context.setUserContext(updatedUser);
-            clearInterval(poll);
-            setInterview(res.data);
           }
-        }, 3000);
-      }
+        }
+      };
     };
 
-    fetchData();
+    const getInterview = async () => {
+      const { data: interview } = await apiClient.get<model.Interview>(
+        `/get-interview/${interviewId}`
+      );
+      setInterview(interview);
+      setLoading(false);
+    };
+
+    getInterview();
+    createConnection();
 
     return () => {
-      clearInterval(poll);
+      console.log("closing websocket");
+      socket?.close();
     };
   }, []);
 
@@ -58,7 +75,7 @@ function InterviewStatus() {
       }
       return interview;
     });
-    // TODO: Update intersection status via POST
+    // TODO: update interview status to IN_PROGRESS
   };
 
   const renderInterviewState = (status: string) => {

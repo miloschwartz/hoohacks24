@@ -1,16 +1,26 @@
-import { useEffect, useState } from "react";
 import { useReactMediaRecorder } from "react-media-recorder";
 
 interface RecordAudioProps {
   onCompleteRecording: (url: string) => void;
+  onStartRecording?: () => void;
+  onStopRecording?: () => void;
 }
 
 function RecordAudio({ onCompleteRecording }: RecordAudioProps) {
-  const [showMedia, setShowMedia] = useState(true);
-  const [isRecording, setIsRecording] = useState(false);
-
   const { status, startRecording, stopRecording, mediaBlobUrl } =
     useReactMediaRecorder({ audio: true, video: false, screen: false });
+
+  const onStart = () => {
+    startRecording();
+  };
+
+  const onStop = () => {
+    stopRecording();
+    console.log("jere");
+    if (mediaBlobUrl) {
+      onCompleteRecording(mediaBlobUrl);
+    }
+  };
 
   return (
     <>
@@ -18,39 +28,19 @@ function RecordAudio({ onCompleteRecording }: RecordAudioProps) {
       <div className="join">
         <button
           className="btn btn-success join-item"
-          disabled={isRecording}
-          onClick={() => {
-            startRecording();
-            setIsRecording(true);
-          }}
+          disabled={status === "recording"}
+          onClick={() => onStart()}
         >
-          Start Recording
+          Start
         </button>
         <button
           className="btn btn-error join-item"
-          disabled={!isRecording}
-          onClick={() => {
-            stopRecording();
-            setIsRecording(false);
-            setShowMedia(true);
-          }}
+          disabled={status !== "recording"}
+          onClick={() => onStop()}
         >
-          Stop Recording
+          Stop
         </button>
       </div>
-
-      {showMedia && <audio src={mediaBlobUrl} controls></audio>}
-
-      <button
-        className="btn btn-accent"
-        onClick={() => {
-          if (mediaBlobUrl) {
-            onCompleteRecording(mediaBlobUrl);
-          }
-        }}
-      >
-        Upload to S3
-      </button>
     </>
   );
 }

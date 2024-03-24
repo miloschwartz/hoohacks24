@@ -139,8 +139,8 @@ export const handler = ApiHandler(async (event) => {
         Entries: [
             {
                 EventBusName: EventBus.bus.eventBusName,
-                Source: "generate-interview",
-                DetailType: "generate-interview",
+                Source: "create-interview",
+                DetailType: "create-interview",
                 Detail: JSON.stringify(payload),
             }
         ]

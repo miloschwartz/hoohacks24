@@ -1,5 +1,3 @@
-import { BsFillLightbulbFill } from "react-icons/bs";
-
 function QuestionsBeingGeneraterated() {
   return (
     <>
