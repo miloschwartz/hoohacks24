@@ -2,10 +2,16 @@ import { useNavigate } from "react-router-dom";
 import { Trans , useTranslation } from 'react-i18next';
 
 function Home() {
+<<<<<<< HEAD
   const navigate = useNavigate();
   useTranslation();
   
   return (
+=======
+  const navigate = useNavigate();
+  
+  return (
+>>>>>>> fe9e9331ca744a4d6e097b79a66148a87bec7a2b
     <>
       <div className="hero py-20 bg-base-200">
         <div className="hero-content text-center">
@@ -100,6 +106,7 @@ function Home() {
                 </dd>
               </div>
 <div className="relative">
+<<<<<<< HEAD
   <dt>
     <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white">
       <svg
@@ -126,6 +133,34 @@ function Home() {
     <Trans>Our platform supports multiple languages, allowing you to practice
     interviewing in your preferred language.</Trans>
   </dd>
+=======
+  <dt>
+    <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white">
+      <svg
+        className="h-6 w-6"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
+        />
+      </svg>
+    </div>
+    <p className="ml-16 text-lg leading-6 font-medium">
+      Multi-Language Support
+    </p>
+  </dt>
+  <dd className="mt-2 ml-16 text-base text-gray-500">
+    Our platform supports multiple languages, allowing you to practice
+    interviewing in your preferred language.
+  </dd>
+>>>>>>> fe9e9331ca744a4d6e097b79a66148a87bec7a2b
 </div>
               <div className="relative ">
                 <dt>
