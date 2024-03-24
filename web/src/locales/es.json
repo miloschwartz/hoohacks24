@@ -42,7 +42,12 @@
   "Job Title": "Título profesional",
   "Sign In to Begin": "Inicia Sesión Para Comenzar",
   "Job Listing or Description": "Listado o Descripción de Trabajo",
-  "Provide a brief job listing or description to help us ask relevant questions for. You can copy and paste directly from a job listing or description.": "Proporciona un breve anuncio de trabajo o descripción para ayudarnos a hacer preguntas relevantes. Puedes copiar y pegar directamente de un anuncio de trabajo o descripción.",
+  "Upload Resume": "Subir currículum",
+  "Provide a brief job listing or description to help us ask relevant questions for. You can copy and paste directly from a job listing or description.": "Proporciona una breve descripción o anuncio de trabajo para ayudarnos a formular preguntas relevantes. Puedes copiar y pegar directamente de una oferta de trabajo o descripción.",
   "Upload a pdf, png, or jpeg of your resume to help the AI ask personalized questions.": "Sube un pdf, png o jpeg de tu currículum para ayudar a la IA a hacer preguntas personalizadas.",
-  "Upload Resume": "Subir currículum"
+  "Upload resume": "Subir currículum",
+  "Ace Your Interview with AI": "Domina tu Entrevista con IA",
+  "Our AI analyzes your resume and the job description to generate interview questions specifically tailored to your application, ensuring a highly relevant practice experience.": "Nuestra IA analiza tu currículum y la descripción del trabajo para generar preguntas de entrevista específicamente adaptadas a tu solicitud, asegurando una experiencia de práctica altamente relevante.",
+  "Practice answering interview questions naturally by speaking your responses. Our advanced speech-to-text technology accurately transcribes your answers for easy review and analysis.": "Practica respondiendo a preguntas de entrevista de manera natural hablando tus respuestas. Nuestra tecnología avanzada de conversión de voz a texto transcribe tus respuestas con precisión para una fácil revisión y análisis.",
+  "Receive comprehensive feedback on your interview performance, including insights on your strengths and areas for improvement. Our AI-powered analytics help you track your progress and refine your interview skills.": "Recibe comentarios completos sobre tu desempeño en la entrevista, incluidos detalles sobre tus fortalezas y áreas de mejora. Nuestros análisis potenciados por IA te ayudan a seguir tu progreso y perfeccionar tus habilidades para la entrevista."
 }

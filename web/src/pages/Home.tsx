@@ -9,20 +9,22 @@ function Home() {
         <div className="hero-content text-center">
           <div className="max-w-md">
             <h1 className="text-5xl font-bold mb-6">
-              Ace Your Interview with AI
+<Trans>Ace Your Interview with AI</Trans>
             </h1>
             <p className="py-6">
+<Trans>
               Master your next job interview with AI! Upload your resume, input
               the job description, and dive into a realistic interview
               experience tailored just for you. Receive instant feedback and
-              refine your responses to make a stellar impression every time.
+                refine your responses to make a stellar impression every time.
+  </Trans>
             </p>
             <div className="flex justify-center">
               <button
                 className="btn btn-primary btn-lg"
                 onClick={() => navigate("/start")}
               >
-                Get Started
+<Trans>Get Started</Trans>
               </button>
             </div>
           </div>
@@ -32,10 +34,10 @@ function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:text-center">
             <h2 className="text-base text-primary font-semibold tracking-wide uppercase">
-              Features
+              <Trans>Features</Trans>
             </h2>
             <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-              Elevate Your Interview Skills
+<Trans>Elevate Your Interview Skills</Trans>
             </p>
           </div>
           <div className="mt-10">
@@ -50,7 +52,7 @@ function Home() {
                   <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Personalized Questions</p>
                 </dt>
                 <dd className="mt-2 ml-16 text-base text-gray-500">
-                  Our AI analyzes your resume and the job description to generate interview questions specifically tailored to your application, ensuring a highly relevant practice experience.
+<Trans>Our AI analyzes your resume and the job description to generate interview questions specifically tailored to your application, ensuring a highly relevant practice experience.</Trans>
                 </dd>
               </div>
               <div className="relative">
@@ -63,7 +65,7 @@ function Home() {
                   <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Speech-to-Text Technology</p>
                 </dt>
                 <dd className="mt-2 ml-16 text-base text-gray-500">
-                  Practice answering interview questions naturally by speaking your responses. Our advanced speech-to-text technology accurately transcribes your answers for easy review and analysis.
+<Trans>Practice answering interview questions naturally by speaking your responses. Our advanced speech-to-text technology accurately transcribes your answers for easy review and analysis.</Trans>
                 </dd>
               </div>
               <div className="relative ">
@@ -76,7 +78,7 @@ function Home() {
                   <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Detailed Feedback and Analytics</p>
                 </dt>
                 <dd className="mt-2 ml-16 text-base text-gray-500">
-                  Receive comprehensive feedback on your interview performance, including insights on your strengths and areas for improvement. Our AI-powered analytics help you track your progress and refine your interview skills.
+<Trans>Receive comprehensive feedback on your interview performance, including insights on your strengths and areas for improvement. Our AI-powered analytics help you track your progress and refine your interview skills.</Trans>
                 </dd>
               </div>
  
