@@ -26,3 +26,8 @@ Proficio AI is a cutting-edge web application designed to help users excel in jo
 ## Additional Details
 
 Proficio AI was developed as part of the 2024 HooHack Hackathon, where our team aimed to create a solution that empowers individuals in their career advancement journey. By combining state-of-the-art AI technologies with intuitive user experience, Proficio AI aims to revolutionize the way job seekers prepare for and approach interviews.
+
+## Contributers
+
+- **Milo Schwartz**: [Github](https://github.com/miloschwartz)  [LinkedIn](https://www.linkedin.com/in/miloaschwartz/) 
+
