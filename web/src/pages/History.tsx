@@ -5,6 +5,7 @@ import Loading from "../components/Loading";
 import * as model from "../../../model";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import { Trans } from "react-i18next";
 
 function History() {
   const [pageNo, setPageNo] = useState(1);
@@ -164,9 +165,9 @@ function History() {
                   <thead>
                     <tr>
                       <th></th>
-                      <th>Created</th>
-                      <th>Total Questions</th>
-                      <th>Status</th>
+                      <th><Trans>Created</Trans></th>
+                      <th><Trans>Total Questions</Trans></th>
+                      <th><Trans>Status</Trans></th>
                       <th></th>
                     </tr>
                   </thead>
@@ -184,7 +185,7 @@ function History() {
                               interview.status
                             )}`}
                           >
-                            {renderStatus(interview.status)}
+                            {<Trans>renderStatus(interview.status)</Trans>}
                           </div>
                         </td>
                         <td>
@@ -194,7 +195,7 @@ function History() {
                               navigate(`/interview/${interview.interviewId}`);
                             }}
                           >
-                            {getButtonText(interview.status)}
+                            {<Trans>getButtonText(interview.status)</Trans>}
                           </button>
                         </td>
                       </tr>

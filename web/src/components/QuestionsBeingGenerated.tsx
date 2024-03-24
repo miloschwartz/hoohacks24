@@ -15,8 +15,7 @@ function QuestionsBeingGeneraterated() {
             <div className="card-body">
               <h2 className="card-title">Working on it!</h2>
               <p>
-                Your personalized interview is being generated. This may take a
-                few moments.
+                Your personalized interview is being generated. This may take a few moments.
               </p>
               <div className="text-center">
                 <span className="loading loading-ball"></span>

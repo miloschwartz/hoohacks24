@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { Trans } from 'react-i18next'
 import { UserContext } from "../App";
 
 function Profile() {
@@ -16,7 +17,7 @@ function Profile() {
         <div className="content-container">
           <div className="card w-100 bg-base-300 shadow-xl mt-10">
             <div className="card-body">
-              <h2 className="card-title">Hello, {user.name}</h2>
+              <h2 className="card-title"><Trans>Hello</Trans>, {user.name}</h2>
 
               <div className="text-center">
                 <img
@@ -25,14 +26,14 @@ function Profile() {
                   className="p-10 w-72 m-auto"
                 />
                 <div>
-                  <p>Email: {user.email}</p>
-                  <p>Credits: {user.credits}</p>
+                  <p><Trans>Email</Trans>: {user.email}</p>
+                  <p><Trans>Credits</Trans>: {user.credits}</p>
                 </div>
               </div>
 
               <div className="card-actions">
                 <button className="btn mt-10 ml-auto" onClick={() => signOut()}>
-                  Sign Out
+                  <Trans>Sign Out</Trans>
                 </button>
               </div>
             </div>

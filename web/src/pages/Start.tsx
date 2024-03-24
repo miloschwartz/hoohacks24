@@ -3,6 +3,7 @@ import { UserContext, apiClient } from "../App";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../useToast";
 import * as model from "../../../model";
+import { Trans } from "react-i18next";
 
 function Start() {
   const [jobDescription, setJobDescription] = useState<string | null>(null);
@@ -62,11 +63,17 @@ function Start() {
           </div> */}
 
           <ul className="steps mb-10 w-full">
-            <li className="step step-primary">Provide Info</li>
-            <li className="step">Generate</li>
-            <li className="step">Interview</li>
+            <li className="step step-primary">
+              <Trans>Provide Info</Trans>
+            </li>
+            <li className="step">
+              <Trans>Generate</Trans>
+            </li>
+            <li className="step">
+              <Trans>Interview</Trans>
+            </li>
             <li data-content="★" className="step">
-              Get Feedback
+              <Trans>Get Feedback</Trans>
             </li>
           </ul>
 
@@ -75,7 +82,7 @@ function Start() {
               <div className="mb-2">
                 <div className="mb-2">
                   <label htmlFor="interview-type" className="label">
-                    Interview Type
+                    <Trans>Interview Type</Trans>
                   </label>
                   <select
                     id="interview-type"
@@ -84,16 +91,16 @@ function Start() {
                     onChange={(e) => setInterviewType(e.target.value)}
                   >
                     <option value={model.InterviewType.BEHAVIORAL}>
-                      Behaviorial
+                      <Trans>Behaviorial</Trans>
                     </option>
                     <option value={model.InterviewType.TECHNICAL}>
-                      Technical
+                      <Trans>Technical</Trans>
                     </option>
                   </select>
                 </div>
 
                 <label htmlFor="job-title" className="label">
-                  Job Title
+                  <Trans>Job Title</Trans>
                 </label>
                 <input
                   id="job-title"
@@ -105,7 +112,7 @@ function Start() {
               </div>
 
               <label htmlFor="job-description" className="label">
-                Job Listing or Description
+                <Trans>Job Listing or Description</Trans>
               </label>
               <textarea
                 className="textarea textarea-bordered h-48"
@@ -114,13 +121,15 @@ function Start() {
                 placeholder="Type here"
               ></textarea>
               <label htmlFor="job-description" className="label-text mt-2">
-                Provide a brief job listing or description to help us ask
-                relevant questions for. You can copy and paste directly from a
-                job listing or description.
+                <Trans>
+                  Provide a brief job listing or description to help us ask
+                  relevant questions for. You can copy and paste directly from a
+                  job listing or description.
+                </Trans>
               </label>
 
               <span className="font-bold text-xl mb-4 mt-10">
-                Upload Resume
+                <Trans>Upload Resume</Trans>
               </span>
               <div className="form-control w-100" id="resume-upload">
                 <input
@@ -137,8 +146,10 @@ function Start() {
                 />
               </div>
               <label htmlFor="resume-upload" className="label-text mt-2">
-                Upload a pdf, png, or jpeg of your resume to help the AI ask
-                personalized questions.
+                <Trans>
+                  Upload a pdf, png, or jpeg of your resume to help the AI ask
+                  personalized questions.
+                </Trans>
               </label>
 
               <div className="card-actions justify-end">
@@ -156,7 +167,7 @@ function Start() {
                     {generateLoading ? (
                       <span className="loading loading-spinner loading-sm"></span>
                     ) : null}
-                    Generate Interview
+                    <Trans>Generate Interview</Trans>
                   </button>
                 ) : (
                   <a
@@ -167,7 +178,7 @@ function Start() {
                     className="ml-auto mt-10"
                   >
                     <button className="btn btn-primary">
-                      Sign In to Begin
+                      <Trans>Sign In to Begin</Trans>
                     </button>
                   </a>
                 )}
