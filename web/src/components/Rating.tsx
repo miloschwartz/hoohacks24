@@ -34,25 +34,25 @@ function Rating({ rating, size }: RatingProps) {
       />
       <input
         type="radio"
-        className={`mask mask-circle  ${getRatingColor(rating)}`}
+        className={`mask mask-circle ${getRatingColor(rating)}`}
         defaultChecked={rating === model.Rating.LOW}
         disabled
       />
       <input
         type="radio"
-        className={`mask mask-circle  ${getRatingColor(rating)}`}
+        className={`mask mask-circle ${getRatingColor(rating)}`}
         defaultChecked={rating === model.Rating.MEDIUM}
         disabled
       />
       <input
         type="radio"
-        className={`mask mask-circle  ${getRatingColor(rating)}`}
+        className={`mask mask-circle ${getRatingColor(rating)}`}
         defaultChecked={rating === model.Rating.HIGH}
         disabled
       />
       <input
         type="radio"
-        className={`mask mask-circle  ${getRatingColor(rating)}`}
+        className={`mask mask-circle ${getRatingColor(rating)}`}
         defaultChecked={rating === model.Rating.VERY_HIGH}
         disabled
       />

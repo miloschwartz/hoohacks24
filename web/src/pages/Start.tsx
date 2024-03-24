@@ -114,9 +114,9 @@ function Start() {
                 placeholder="Type here"
               ></textarea>
               <label htmlFor="job-description" className="label-text mt-2">
-                Provide a brief job listing or description to help the AI ask
-                relevant questions for. You can copy and paste from a job
-                listing or description.
+                Provide a brief job listing or description to help us ask
+                relevant questions for. You can copy and paste directly from a
+                job listing or description.
               </label>
 
               <span className="font-bold text-xl mb-4 mt-10">
@@ -138,8 +138,7 @@ function Start() {
               </div>
               <label htmlFor="resume-upload" className="label-text mt-2">
                 Upload a pdf, png, or jpeg of your resume to help the AI ask
-                personalized questions. Your resume will not be stored on our
-                servers.
+                personalized questions.
               </label>
 
               <div className="card-actions justify-end">

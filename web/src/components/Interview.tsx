@@ -191,7 +191,7 @@ function Interview() {
           </div>
           {q.answer && (
             <div className="chat chat-end">
-              <div className="chat-header mb-1">You</div>
+              <div className="chat-header mb-1">Your Response</div>
               <div className="chat-bubble">
                 <p>{q.answer}</p>
               </div>

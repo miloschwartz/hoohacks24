@@ -1,16 +1,17 @@
 import { useContext, useState } from "react";
 import { InterviewContext } from "../pages/InterviewStatus";
 import * as model from "../../../model";
-import QuestionFeedback from "./QuestionFeedback";
+import QuestionFeedback from "./SectionFeedback";
 import Rating from "./Rating";
 import { IoSparkles } from "react-icons/io5";
+import ListCard from "./ListCard";
 
 function Feedback() {
   const { interview, setInterview } = useContext(InterviewContext);
   const [expanded, setExpanded] = useState<number>(0);
-  const [selectedTab, setSelectedTab] = useState<model.QuestionFeedbackType>(
-    model.QuestionFeedbackType.CONTENT_QUALITY
-  );
+  const [selectedTab, setSelectedTab] = useState<
+    model.QuestionFeedbackType | "overall"
+  >("overall");
 
   return (
     <>
@@ -61,33 +62,17 @@ function Feedback() {
 
                   <div className="flex flex-wrap mt-4">
                     <div className="w-full md:w-1/2 mb-6 md:mb-0 pr-6">
-                      <div className="card bg-base-100 h-full flex flex-col">
-                        <div className="card-body flex-grow">
-                          <div className="card-title">Strengths</div>
-                          <ul className="list-disc ml-5 py-4">
-                            {interview.overallFeedback.pros.map((pro, idx) => (
-                              <li key={idx} className="opacity-60">
-                                {pro}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
+                      <ListCard
+                        title="Strengths"
+                        items={interview.overallFeedback.pros}
+                      />
                     </div>
 
                     <div className="w-full md:w-1/2 mb-6 md:mb-0">
-                      <div className="card bg-base-100 h-full flex flex-col">
-                        <div className="card-body flex-grow">
-                          <div className="card-title">Weaknesses</div>
-                          <ul className="list-disc ml-5 py-4">
-                            {interview.overallFeedback.cons.map((con, idx) => (
-                              <li key={idx} className="opacity-60">
-                                {con}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
+                      <ListCard
+                        title="Weaknesses"
+                        items={interview.overallFeedback.cons}
+                      />
                     </div>
                   </div>
 
@@ -157,6 +142,14 @@ function Feedback() {
 
                         <div className="place-items-center grid py-4">
                           <div className="tabs tabs-boxed">
+                            <a
+                              className={`tab ${
+                                selectedTab === "overall" && "tab-active"
+                              }`}
+                              onClick={() => setSelectedTab("overall")}
+                            >
+                              Overall
+                            </a>
                             <a
                               className={`tab ${
                                 selectedTab ===
@@ -265,10 +258,39 @@ function Feedback() {
                           </div>
                         </div>
                         <div>
-                          <QuestionFeedback
-                            type={selectedTab}
-                            index={expanded}
-                          />
+                          {selectedTab === "overall" ? (
+                            <>
+                              <div className="flex flex-wrap mt-3">
+                                <div className="w-full md:w-1/2 mb-6 md:mb-0 pr-6">
+                                  <ListCard
+                                    title="Strengths"
+                                    items={
+                                      question.feedback.overallFeedback.pros
+                                    }
+                                  />
+                                </div>
+
+                                <div className="w-full md:w-1/2 mb-6 md:mb-0">
+                                  <div className="card bg-base-100 h-full flex flex-col">
+                                    <ListCard
+                                      title="Weaknesses"
+                                      items={
+                                        question.feedback.overallFeedback.cons
+                                      }
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <p className="mt-4">
+                                {question.feedback.overallFeedback.comments}
+                              </p>
+                            </>
+                          ) : (
+                            <QuestionFeedback
+                              type={selectedTab}
+                              index={expanded}
+                            />
+                          )}
                         </div>
                       </div>
                     </div>

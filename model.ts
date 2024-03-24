@@ -94,7 +94,6 @@ export type OverallFeedbackQuestion = {
     overallRating: Rating;
     pros: string[];
     cons: string[];
-    fillerWords: string[];
 }
 
 export enum QuestionFeedbackType {

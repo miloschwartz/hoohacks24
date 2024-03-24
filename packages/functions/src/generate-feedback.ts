@@ -49,6 +49,20 @@ export async function handler(event: EventBridgeEvent, context: any, callback: a
                         comments: {
                             description: "Feedback on the content quality of the response: relevance, depth, and accuracy. Write in complete sentences, paragraph format. Pretend you are speaking directly to the candidate.",
                             type: "string"
+                        },
+                        pros: {
+                            description: "A list of what the candidate did well or pros?",
+                            type: "array",
+                            items: {
+                                type: "string"
+                            }
+                        },
+                        cons: {
+                            description: "A list of what the candidate did not do well or cons?",
+                            type: "array",
+                            items: {
+                                type: "string"
+                            }
                         }
                     }
                 },
@@ -73,7 +87,7 @@ export async function handler(event: EventBridgeEvent, context: any, callback: a
                         comments: {
                             description: "Feedback on the structure organization of the response: clarity, flow, and brevity. Write in complete sentences, paragraph format. Pretend you are speaking directly to the candidate.",
                             type: "string"
-                        }
+                        },
                     }
                 },
                 presentationDelivery: {
@@ -222,13 +236,6 @@ export async function handler(event: EventBridgeEvent, context: any, callback: a
                                 type: "string"
                             }
                         },
-                        fillerWords: {
-                            description: "A list filler words the candidate used in the response if any.",
-                            type: "array",
-                            items: {
-                                type: "string"
-                            }
-                        },
                     }
                 }
             }
@@ -260,7 +267,7 @@ export async function handler(event: EventBridgeEvent, context: any, callback: a
 
                 console.log("Got GPT data");
 
-                interview.questions[i].feedback = gptJson;
+                interview.questions[i].feedback = convertToQuestionFeedback(gptJson);
                 interview.questions[i].duration = calculateDurationOfResponse(interview.questions[i].start, interview.questions[i].end);
                 interview.questions[i].totalWordCount = calculateTotalWords(interview.questions[i].answer);
                 interview.questions[i].wordsPerMinute = calculateWordsSpokenPerMinute(interview.questions[i].answer, interview.questions[i].duration);
@@ -393,6 +400,96 @@ function calculateDurationOfResponse(start: number, end: number) {
     const duration = end - start;
     return duration;
 }
+
+function convertToQuestionFeedback(feedbackData: any): model.QuestionFeedback {
+    const getDescription = (componentName: string): string => {
+        switch (componentName) {
+            case 'relevance':
+                return 'The extent to which the answer directly addresses the question.';
+            case 'depth':
+                return 'The level of detail and thoroughness in the answer.';
+            case 'accuracy':
+                return 'The correctness of the information provided.';
+            case 'clarity':
+                return 'How understandable the answer is.';
+            case 'flow':
+                return 'The logical progression and organization of the answer.';
+            case 'brevity':
+                return 'The conciseness of the answer.';
+            case 'confidence':
+                return 'The level of self-assurance in the delivery of the answer.';
+            case 'articulation':
+                return 'The clarity and effectiveness of communication.';
+            case 'engagement':
+                return 'The ability to capture and maintain the interviewer’s attention.';
+            case 'dataBacked':
+                return 'The use of data or statistics to support statements.';
+            case 'examples':
+                return 'The use of relevant examples to substantiate claims.';
+            case 'referenceExperience':
+                return 'The connection of the answer to personal or professional experiences.';
+            case 'creativity':
+                return 'The originality and novelty of the answer.';
+            case 'insightfulness':
+                return 'The ability to provide deeper understanding or novel perspectives.';
+            case 'problemSolving':
+                return 'The capacity to identify and solve challenges.';
+            case 'relevanceRole':
+                return 'The specificity of the answer to the role being interviewed for.';
+            case 'awareness':
+                return 'The understanding of the industry and company context.';
+            case 'alignmentValues':
+                return 'The congruence with the organization’s values and culture.';
+            case 'adaptability':
+                return 'The ability to adjust the answer based on the conversation flow.';
+            case 'listeningSkills':
+                return 'The ability to listen and respond appropriately to the question.';
+            case 'emotionalIntelligence':
+                return 'The ability to perceive and respond to emotional cues.';
+            default:
+                return 'No description available.';
+        }
+    };
+
+    const formatSectionName = (sectionName: string) => {
+        // convert camel case to title case
+        const formatted = sectionName.replace(/([A-Z])/g, ' $1');
+        return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+
+    }
+
+    const convertSection = (section: any, sectionComponents: string[]): model.QuestionFeedbackSection => {
+        const components = sectionComponents.map(component => ({
+            name: formatSectionName(component),
+            description: getDescription(component),
+            rating: section[component]
+        })).filter(component => component.rating !== undefined);
+
+        return {
+            comments: section.comments,
+            components: components
+        };
+    };
+
+    return {
+        sections: {
+            contentQuality: convertSection(feedbackData.contentQuality, ['accuracy', 'depth', 'relevance']),
+            structureOrganization: convertSection(feedbackData.structureOrganization, ['clarity', 'brevity', 'flow']),
+            presentationDelivery: convertSection(feedbackData.presentationDelivery, ['engagement', 'confidence', 'articulation']),
+            supportJustification: convertSection(feedbackData.supportJustification, ['dataBacked', 'examples', 'referenceExperience']),
+            criticalThinkingInnovation: convertSection(feedbackData.criticalThinkingInnovation, ['creativity', 'insightfulness', 'problemSolving']),
+            culturalContextualFit: convertSection(feedbackData.culturalContextualFit, ['relevanceRole', 'awareness', 'alignmentValues']),
+            interpersonalDynamics: convertSection(feedbackData.interpersonalDynamics, ['adaptability', 'listeningSkills', 'emotionalIntelligence']),
+        },
+        overallFeedback: {
+            comments: feedbackData.overallFeedback.comments,
+            overallRating: feedbackData.overallFeedback.overallRating,
+            pros: feedbackData.overallFeedback.pros,
+            cons: feedbackData.overallFeedback.cons
+        }
+    };
+}
+
 interface EventBridgeEvent {
     version: string;
     id: string;
@@ -406,40 +503,3 @@ interface EventBridgeEvent {
         interview: model.Interview;
     };
 }
-
-/*
-Content Quality:
-Relevance: Assesses whether the candidate's answer directly and adequately addressed the posed question. Did they stay on topic, or did they divert?
-Depth: Examines the thoroughness of the candidate's response. Did they give a cursory reply or delve into the nuances and intricacies of the topic?
-Accuracy: Checks the veracity and correctness of the statements or facts provided by the candidate. Are they well-informed?
-
-Structure & Organization:
-Clarity: Determines if the candidate presented their thoughts in a clear and comprehensible manner, without muddling the message with ambiguities.
-Flow: Evaluates the logical sequence and progression of the candidate's answer. Was their response well-organized, leading to a coherent conclusion?
-Brevity: Assesses if the candidate was concise, providing pertinent information without unnecessary elaboration or digression.
-
-Presentation & Delivery:
-Confidence: Gauges the candidate's self-assuredness when delivering their answer. Did they speak with conviction, or did they seem doubtful?
-Articulation: Assesses how clearly and effectively the candidate conveyed their thoughts. Were their points easily understandable?
-Engagement: Determines if the candidate's manner of response was engaging, capturing the attention of the interviewer.
-
-Support & Justification:
-Examples: Checks if the candidate substantiated their claims or points with relevant examples, enhancing the credibility of their response.
-Data-backed: Evaluates if the candidate reinforced their statements with data or statistics, demonstrating a fact-based approach.
-Reference to Experience: Sees if the candidate related their answer to personal experiences or past work, showcasing real-world applicability.
-
-Critical Thinking & Innovation:
-Insightfulness: Gauges whether the candidate's answer showcased deeper insights, reflecting their ability to think critically and perceive nuances.
-Problem-Solving: Assesses the candidate's ability to identify, analyze, and propose solutions to challenges presented in the question.
-Creativity: Examines the candidate's capacity for original thought or novel approaches in their response.
-
-Cultural & Contextual Fit:
-Alignment with Company Values: Assesses if the candidate's answer and approach align with the known ethos, culture, and values of the organization.
-Relevance to Role: Determines if the candidate tailored their response considering the specifics of the role they're interviewing for.
-Awareness: Evaluates the candidate's knowledge and awareness of the industry, company, or broader context related to the question.
-
-Interpersonal Dynamics:
-Listening Skills: Checks if the candidate actively listened to the question, ensuring they responded aptly.
-Adaptability: Assesses the candidate's ability to modify or pivot their answer based on feedback or subsequent queries.
-Emotional Intelligence: Gauges the candidate's capability to discern and navigate the emotional undertones of the question or conversation.
-*/
