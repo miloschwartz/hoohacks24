@@ -9,8 +9,11 @@ function Home() {
         <div className="hero-content text-center">
           <div className="max-w-md">
             <h1 className="text-5xl font-bold">
-              Simulate your interview with AI
+              Proficio AI
             </h1>
+            <h2 className="text-xl font-bold">
+              Simulate your interview with AI
+            </h2>
             <p className="py-6">
               Master your next job interview with AI! Upload your resume, input
               the job description, and dive into a realistic interview
