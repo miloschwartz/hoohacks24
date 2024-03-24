@@ -378,6 +378,8 @@ export async function handler(event: EventBridgeEvent, context: any, callback: a
             ":totalDuration": totalDuration,
             ":averageDuration": averageDuration,
             ":overallFeedback": interview.overallFeedback,
+        }, {
+            removeUndefinedValues: true
         }),
     }));
 

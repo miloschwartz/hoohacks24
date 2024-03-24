@@ -222,8 +222,17 @@ function Interview() {
         </button>
       );
     }
-    // if (curAnswer && currentQuestion === interview.questions.length - 1) {
-    if (currentQuestion === interview.questions.length - 1) {
+
+    const isLastQuestion = currentQuestion === interview.questions.length - 1;
+    const isLastQuestionAnswered = interview.questions[currentQuestion]?.answer;
+
+    if (isLastQuestion && !isLastQuestionAnswered && !curAnswer && status !== "recording" && !transcribeLoading) {
+      return (
+        <button className="btn btn-success" onClick={() => onStart()}>
+          Start Recording
+        </button>
+      );
+    } else if (isLastQuestion && curAnswer) {
       return (
         <>
           <button
@@ -238,14 +247,26 @@ function Interview() {
             className="btn btn-primary"
             onClick={() => {
               acceptAnswer();
-              finishInterview();
             }}
           >
-            Finish Interview
+            Submit Answer
           </button>
         </>
       );
+    } else if (isLastQuestion && isLastQuestionAnswered) {
+      // Case when the last question has been answered.
+      return (
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            finishInterview();
+          }}
+        >
+          Finish Interview
+        </button>
+      );
     }
+  
     if (curAnswer) {
       return (
         <>
