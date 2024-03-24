@@ -17,7 +17,7 @@ interface UserContextProps {
 }
 
 export const UserContext = React.createContext<UserContextProps | undefined>(
-  undefined
+  undefined,
 );
 
 export const apiClient = axios.create({
@@ -35,9 +35,8 @@ function App() {
       const token = localStorage.getItem("session");
       if (token) {
         apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        const { data: user } = await apiClient.get<model.UserSession>(
-          "/session"
-        );
+        const { data: user } =
+          await apiClient.get<model.UserSession>("/session");
         if (user) {
           setUser(user);
         }

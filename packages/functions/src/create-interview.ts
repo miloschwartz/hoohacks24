@@ -106,7 +106,7 @@ export const handler = ApiHandler(async (event) => {
         properties: {
             questions: {
                 type: "array",
-                description: "A list of 7-10 questions to ask the candidate",
+                description: "A list of 4 questions to ask the candidate",
                 items: {
                     type: "string"
                 }

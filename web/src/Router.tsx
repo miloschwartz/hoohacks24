@@ -26,7 +26,6 @@ function Router({ user: { userContext, setUserContext } }: RouterProps) {
           <Route path="/" element={<Home />}></Route>
           <Route path="/start" element={<Start />}></Route>
           <Route
-            path="/profile"
             element={
               <ProtectedRoute user={userContext}>
                 <Profile />

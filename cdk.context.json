@@ -1,1 +1,10 @@
-{}
+{
+  "hosted-zone:account=725675864923:domainName=interviewsimulatorai.com:region=us-east-1": {
+    "Id": "/hostedzone/Z00296013EYJLSBONBY69",
+    "Name": "interviewsimulatorai.com."
+  },
+  "hosted-zone:account=725675864923:domainName=proficioai.co:region=us-east-1": {
+    "Id": "/hostedzone/Z00186113T2M28IRDKRUL",
+    "Name": "proficioai.co."
+  }
+}
