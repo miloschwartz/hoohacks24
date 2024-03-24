@@ -18,6 +18,7 @@ export const main: APIGatewayProxyHandler = async (event) => {
             Item: marshall({
                 connectionId: event.requestContext.connectionId,
                 subId: query.subId,
+                connectionTime: Date.now(),
             })
         }));
     } catch (err) {

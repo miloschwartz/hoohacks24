@@ -24,7 +24,10 @@ export const main: APIGatewayProxyHandler = async (event) => {
             RequestItems: {
                 [Table['ws-connections'].tableName]: res.Items.map(item => ({
                     DeleteRequest: {
-                        Key: item
+                        Key: {
+                            connectionId: item.connectionId,
+                            subId: item.subId
+                        }
                     }
                 }))
             }

@@ -60,7 +60,7 @@ export const handler = ApiHandler(async (event) => {
         }
     }
 
-    const { interviewId, questionIndex } = fields;
+    const { interviewId, questionIndex, start, end } = fields;
 
     if (!interviewId || !questionIndex) {
         return {
@@ -143,7 +143,12 @@ export const handler = ApiHandler(async (event) => {
 
     console.log('Transcribed audio');
 
-    interview.questions[parseInt(fields.questionIndex)].answer = response.data;
+    const index = parseInt(fields.questionIndex);
+    interview.questions[index].answer = response.data;
+    if (start && end) {
+        interview.questions[index].start = parseInt(start);
+        interview.questions[index].end = parseInt(end);
+    }
 
     // update the item
     await dynamo.send(new UpdateItemCommand({
@@ -157,4 +162,11 @@ export const handler = ApiHandler(async (event) => {
             ':questions': interview.questions
         }),
     }));
+
+    return {
+        statusCode: 200,
+        body: JSON.stringify({
+            answer: response.data,
+        }),
+    }
 });

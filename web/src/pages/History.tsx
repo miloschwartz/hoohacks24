@@ -151,7 +151,7 @@ function History() {
     <>
       <div className="content-container">
         <div className="medium-container">
-          <div className="card w-100 bg-base-300 shadow-xl mt-10">
+          <div className="card w-100 bg-base-300 shadow-xl">
             <div className="card-body">
               <div className="overflow-x-auto">
                 <table className="table text-center">

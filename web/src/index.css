@@ -37,3 +37,35 @@ body {
     flex-direction: column;
     width: 1200px;
 }
+
+.chat-container {
+    height: 62vh;
+    overflow-y: scroll;
+    scrollbar-gutter: stable both-edges;
+}
+
+/* For Webkit browsers (Chrome, Safari, etc.) */
+.chat-container::-webkit-scrollbar {
+    width: 5px;
+    /* Adjust width for vertical scrollbars */
+    height: 5px;
+    /* Adjust height for horizontal scrollbars */
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Color of the scroll thumb */
+    border-radius: 3px;
+    /* Rounded corners on the thumb */
+}
+
+.chat-container::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+    /* Color of the track */
+}
+
+/* For Firefox */
+.chat-container {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.1);
+}

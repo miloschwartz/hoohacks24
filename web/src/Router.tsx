@@ -3,7 +3,6 @@ import Home from "./pages/Home";
 import Start from "./pages/Start";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
-import Question from "./components/Question/Question";
 import InterviewStatus from "./pages/InterviewStatus";
 import ProtectedRoute from "./components/ProtectedRoute";
 import History from "./pages/History";
@@ -47,14 +46,6 @@ function Router({ user: { userContext, setUserContext } }: RouterProps) {
             element={
               <ProtectedRoute user={userContext}>
                 <InterviewStatus />
-              </ProtectedRoute>
-            }
-          ></Route>
-          <Route
-            path="/interview/:interviewId/:questionIdx"
-            element={
-              <ProtectedRoute user={userContext}>
-                <Question />
               </ProtectedRoute>
             }
           ></Route>

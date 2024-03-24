@@ -20,6 +20,8 @@ export type Question = {
     question: string;
     answer: string;
     feedback: string;
+    start: number;
+    end: number;
 }
 
 export enum InterviewStatus {

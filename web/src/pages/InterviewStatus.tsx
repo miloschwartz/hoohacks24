@@ -5,8 +5,8 @@ import { UserContext, apiClient } from "../App";
 import QuestionsBeingGeneraterated from "../components/QuestionsBeingGenerated";
 import InterviewReady from "../components/InterviewReady";
 import Loading from "../components/Loading";
-import Question from "../components/Question/Question";
 import React from "react";
+import Interview from "../components/Interview";
 
 interface InterviewContextProps {
   interview: model.Interview;
@@ -59,6 +59,10 @@ function InterviewStatus() {
           }
         }
       };
+
+      socket.onclose = () => {
+        console.log("closing websocket");
+      };
     };
 
     const getInterview = async () => {
@@ -85,7 +89,9 @@ function InterviewStatus() {
       case model.InterviewStatus.READY:
         return <InterviewReady />;
       case model.InterviewStatus.IN_PROGRESS:
-        return <Question />;
+        return <Interview />;
+      case model.InterviewStatus.COMPLETED:
+        return <div>Interview Complete</div>;
     }
   };
 
