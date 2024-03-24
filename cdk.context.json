@@ -1,1 +1,6 @@
-{}
+{
+  "hosted-zone:account=725675864923:domainName=proficioai.co:region=us-east-1": {
+    "Id": "/hostedzone/Z00186113T2M28IRDKRUL",
+    "Name": "proficioai.co."
+  }
+}
