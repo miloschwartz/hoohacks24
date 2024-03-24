@@ -19,8 +19,10 @@
     "@aws-sdk/client-eventbridge": "^3.433.0",
     "@aws-sdk/client-s3": "^3.433.0",
     "@aws-sdk/client-textract": "^3.433.0",
-    "@aws-sdk/s3-request-presigner": "^3.433.0",
+    "@aws-sdk/s3-request-presigner": "^3.437.0",
     "@aws-sdk/util-dynamodb": "^3.433.0",
+    "axios": "^1.6.0",
+    "form-data": "^4.0.0",
     "lambda-multipart-parser": "^1.0.1",
     "openai": "^4.12.4",
     "uuid": "^9.0.1"

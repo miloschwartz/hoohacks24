@@ -11,7 +11,9 @@ function InterviewReady({ onBeginInterview }: InterviewReadyProps) {
             <li className="step step-primary">Provide Info</li>
             <li className="step step-primary">Generate</li>
             <li className="step step-primary">Interview</li>
-            <li className="step">Get Feedback</li>
+            <li data-content="★" className="step">
+              Get Feedback
+            </li>
           </ul>
         </div>
         <div className="card w-100 bg-base-300 shadow-xl">

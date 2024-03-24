@@ -23,6 +23,20 @@ export function MainStack({ stack }: any) {
         }
     });
 
+    const audioBucket = new Bucket(stack, "audio", {
+        notifications: {
+            myNotification: {
+                function: {
+                    handler: "packages/functions/src/transcribe-audio.handler",
+                    bind: [OPENAI_API_KEY, interviewTable, userTable],
+                    permissions: ["s3:*"],
+                    timeout: 240,
+                },
+                events: ["object_created"],
+            },
+        },
+    });
+
     const eventBus = new EventBus(stack, "bus", {
         rules: {
             "generate-questions": {
@@ -54,12 +68,19 @@ export function MainStack({ stack }: any) {
             "POST /generate-interview": {
                 function: {
                     handler: "packages/functions/src/generate-interview.handler",
-                    permissions: ["textract:*", "eventbridge:*", "dynamodb:*"],
+                    permissions: ["textract:*"],
                     timeout: 60,
                 }
             },
             "GET /get-interview/{interviewId}": "packages/functions/src/get-interview.handler",
             "GET /get-interviews": "packages/functions/src/get-interviews.handler",
+            "POST /upload-audio": {
+                function: {
+                    handler: "packages/functions/src/upload-audio.handler",
+                    timeout: 30,
+                    bind: [audioBucket]
+                }
+            }
         },
     });
 
