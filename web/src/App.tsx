@@ -72,6 +72,7 @@ function App() {
       <div className="flex flex-col h-screen justify-between">
         <div className="container mx-auto">
           <div className="navbar bg-base-100">
+          <LanguageSwitcher />
             <div className="flex-1">
               <Link to="/">
                 <span className="text-xl font-bold">
