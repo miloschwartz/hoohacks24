@@ -1,8 +1,30 @@
-interface InterviewReadyProps {
-  onBeginInterview: () => void;
-}
+import { useContext, useState } from "react";
+import { apiClient } from "../App";
+import * as model from "../../../model";
+import { useToast } from "../useToast";
+import { InterviewContext } from "../pages/InterviewStatus";
 
-function InterviewReady({ onBeginInterview }: InterviewReadyProps) {
+function InterviewReady() {
+  const [loading, setLoading] = useState(false);
+  const { interview, setInterview } = useContext(InterviewContext);
+  const toast = useToast();
+
+  const beginInterview = () => {
+    apiClient
+      .post(`/begin-interview/${interview.interviewId}`)
+      .then(() => {
+        setInterview({
+          ...interview,
+          status: model.InterviewStatus.IN_PROGRESS,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.open({ text: `Error: ${err.message}`, type: "error" });
+      })
+      .finally(() => setLoading(false));
+  };
+
   return (
     <>
       <div className="content-container">
@@ -26,8 +48,15 @@ function InterviewReady({ onBeginInterview }: InterviewReadyProps) {
             <div className="card-actions justify-end mt-10">
               <button
                 className="btn btn-primary"
-                onClick={() => onBeginInterview()}
+                disabled={loading}
+                onClick={() => {
+                  setLoading(true);
+                  beginInterview();
+                }}
               >
+                {loading && (
+                  <span className="loading loading-spinner loading-sm"></span>
+                )}
                 Begin Now
               </button>
             </div>

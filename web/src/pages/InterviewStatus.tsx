@@ -6,6 +6,16 @@ import QuestionsBeingGeneraterated from "../components/QuestionsBeingGenerated";
 import InterviewReady from "../components/InterviewReady";
 import Loading from "../components/Loading";
 import Question from "../components/Question/Question";
+import React from "react";
+
+interface InterviewContextProps {
+  interview: model.Interview;
+  setInterview: (interview: model.Interview) => void;
+}
+export const InterviewContext = React.createContext<InterviewContextProps>({
+  interview: {} as model.Interview,
+  setInterview: () => {},
+});
 
 function InterviewStatus() {
   const [loading, setLoading] = useState(true);
@@ -68,24 +78,14 @@ function InterviewStatus() {
     };
   }, []);
 
-  const beginInterview = () => {
-    setInterview((interview) => {
-      if (interview) {
-        return { ...interview, status: model.InterviewStatus.IN_PROGRESS };
-      }
-      return interview;
-    });
-    // TODO: update interview status to IN_PROGRESS
-  };
-
   const renderInterviewState = (status: string) => {
     switch (status) {
-      case "GENERATING_QUESTIONS":
+      case model.InterviewStatus.GENERATING_QUESTIONS:
         return <QuestionsBeingGeneraterated />;
-      case "READY":
-        return <InterviewReady onBeginInterview={beginInterview} />;
-      case "IN_PROGRESS":
-        return <Question interview={interview!} />;
+      case model.InterviewStatus.READY:
+        return <InterviewReady />;
+      case model.InterviewStatus.IN_PROGRESS:
+        return <Question />;
     }
   };
 
@@ -93,7 +93,15 @@ function InterviewStatus() {
     return <Loading />;
   }
 
-  return <>{interview && renderInterviewState(interview.status)}</>;
+  return (
+    <>
+      <InterviewContext.Provider
+        value={{ interview: interview!, setInterview }}
+      >
+        {renderInterviewState(interview!.status)}
+      </InterviewContext.Provider>
+    </>
+  );
 }
 
 export default InterviewStatus;

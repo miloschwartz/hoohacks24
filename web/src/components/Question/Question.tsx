@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import * as model from "../../../../model";
 import Loading from "../Loading";
 import InputAnswer from "../RecordAudio";
@@ -6,15 +6,13 @@ import { apiClient } from "../../App";
 import { useToast } from "../../useToast";
 import "./Question.css";
 import TextResponse from "../TextResponse";
+import { InterviewContext } from "../../pages/InterviewStatus";
 
-interface QuestionProps {
-  interview: model.Interview;
-}
-
-function Question({ interview }: QuestionProps) {
+function Question() {
   const [index, setIndex] = useState(0);
   const [responseType, setResponseType] = useState("audio"); // ["audio", "text"]
   const [isRecording, setIsRecording] = useState(false);
+  const { interview, setInterview } = useContext(InterviewContext);
   const toast = useToast();
 
   const totalQuestions = interview.questions.length;

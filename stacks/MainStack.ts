@@ -78,7 +78,8 @@ export function MainStack({ stack }: any) {
                     bind: [OPENAI_API_KEY],
                     timeout: 240,
                 }
-            }
+            },
+            "POST /begin-interview/{interviewId}": "packages/functions/src/begin-interview.handler",
         },
     });
 
