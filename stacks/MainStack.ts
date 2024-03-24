@@ -123,7 +123,7 @@ export function MainStack({ stack }: any) {
         path: "web",
         buildCommand: "npm run build",
         buildOutput: "dist",
-        customDomain: "proficioai.co",
+         // customDomain: "proficioai.co",
         environment: {
             VITE_WEBSOCKET_ENDPOINT: websocket.url,
             VITE_APP_API_URL: api.url,
