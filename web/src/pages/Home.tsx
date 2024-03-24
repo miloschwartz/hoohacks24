@@ -1,10 +1,8 @@
-import { Trans } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
   const navigate = useNavigate();
 
-<<<<<<< HEAD
   return (
     <>
       <div className="hero min-h-screen bg-base-200">
@@ -14,11 +12,11 @@ function Home() {
               Ace Your Interview with AI
             </h1>
             <p className="py-6">
-              Master your next job interview with AI! Upload your resume, input
-              the job description, and dive into a realistic interview
-              experience tailored just for you. Receive instant feedback and
-              refine your responses to make a stellar impression every time.
-            </p>
+              Master your next job interview with AI! Upload your resume, input
+              the job description, and dive into a realistic interview
+              experience tailored just for you. Receive instant feedback and
+              refine your responses to make a stellar impression every time.
+            </p>
             <div className="flex justify-center">
               <button
                 className="btn btn-primary btn-lg"
@@ -88,36 +86,6 @@ function Home() {
       </div>
     </>
   );
-=======
-  return (
-    <>
-      <div className="content-container">
-        <div className="hero-content text-center">
-          <div className="max-w-md">
-            <h1 className="text-5xl font-bold">
-              <Trans>Simulate your interview with AI</Trans>
-            </h1>
-            <p className="py-6">
-              <Trans>
-                Master your next job interview with AI! Upload your resume,
-                input the job description, and dive into a realistic interview
-                experience tailored just for you. Receive instant feedback and
-                refine your responses to make a stellar impression every time.
-              </Trans>
-            </p>
-            <button
-              className="btn btn-primary"
-              onClick={() => navigate("/start")}
-            >
-              <Trans>Get Started</Trans>
-            </button>
-          </div>
-        </div>
-      </div>
-    </>
-  );
->>>>>>> 3ecf98f (translations)
 }
 
 export default Home;
-
