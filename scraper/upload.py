@@ -1,7 +1,10 @@
 import json
+import boto3
+
+client = boto3.client('batch')
 
 def upload_contents(data):
-    pass
+
 
 def main() -> None:
     with open('db.json', encoding='utf-8') as f:
