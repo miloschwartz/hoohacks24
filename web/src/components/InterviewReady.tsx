@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { apiClient } from "../App";
+import { Trans } from "react-i18next";
 import * as model from "../../../model";
 import { useToast } from "../useToast";
 import { InterviewContext } from "../pages/InterviewStatus";
@@ -30,20 +31,30 @@ function InterviewReady() {
       <div className="content-container">
         <div className="small-container">
           <ul className="steps mb-10 w-full">
-            <li className="step step-primary">Provide Info</li>
-            <li className="step step-primary">Generate</li>
-            <li className="step step-primary">Interview</li>
+            <li className="step step-primary">
+              <Trans>Provide Info</Trans>
+            </li>
+            <li className="step step-primary">
+              <Trans>Generate</Trans>
+            </li>
+            <li className="step step-primary">
+              <Trans>Interview</Trans>
+            </li>
             <li data-content="★" className="step">
-              Get Feedback
+              <Trans>Get Feedback</Trans>
             </li>
           </ul>
         </div>
         <div className="card w-100 bg-base-300 shadow-xl">
           <div className="card-body">
-            <h2 className="card-title">Your Interview is Ready</h2>
+            <h2 className="card-title">
+              <Trans>Your Interview is Ready</Trans>
+            </h2>
             <p>
-              Your personalized interview is ready. Click the button below to
-              start your interview.
+              <Trans>
+                Your personalized interview is ready. Click the button below to
+                start your interview.
+              </Trans>
             </p>
             <div className="card-actions justify-end mt-10">
               <button
@@ -57,7 +68,7 @@ function InterviewReady() {
                 {loading && (
                   <span className="loading loading-spinner loading-sm"></span>
                 )}
-                Begin Now
+                <Trans>Begin Now</Trans>
               </button>
             </div>
           </div>

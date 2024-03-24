@@ -90,7 +90,7 @@ function Interview() {
 
     if (duration.seconds() > 0) {
       result +=
-        duration.seconds() + " second" + (duration.seconds() === 1 ? "" : "s");
+        duration.seconds() + " " + "second" + (duration.seconds() === 1 ? "" : "s");
     }
 
     return result.trim();
