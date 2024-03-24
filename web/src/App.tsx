@@ -4,6 +4,8 @@ import axios from "axios";
 import * as model from "../../model";
 import Router from "./Router";
 import Loading from "./components/Loading";
+import "./i18n"
+import { Trans } from 'react-i18next';
 import { BsGithub, BsLinkedin } from "react-icons/bs";
 
 interface UserContextProps {
@@ -72,7 +74,7 @@ function App() {
             <div className="flex-1">
               <Link to="/">
                 <span className="text-xl font-bold">
-                  Interview Simulator AI
+                  <Trans>Interview Simulator AI</Trans>
                   <span className="badge badge-neutral ml-3">1.0.0</span>
                 </span>{" "}
               </Link>
