@@ -165,9 +165,15 @@ function History() {
                   <thead>
                     <tr>
                       <th></th>
-                      <th><Trans>Created</Trans></th>
-                      <th><Trans>Total Questions</Trans></th>
-                      <th><Trans>Status</Trans></th>
+                      <th>
+                        <Trans>Created</Trans>
+                      </th>
+                      <th>
+                        <Trans>Total Questions</Trans>
+                      </th>
+                      <th>
+                        <Trans>Status</Trans>
+                      </th>
                       <th></th>
                     </tr>
                   </thead>
@@ -182,10 +188,10 @@ function History() {
                         <td>
                           <div
                             className={`badge ${getBadgeColor(
-                              interview.status
+                              interview.status,
                             )}`}
                           >
-                            {<Trans>renderStatus(interview.status)</Trans>}
+                            <Trans>{renderStatus(interview.status)}</Trans>
                           </div>
                         </td>
                         <td>
@@ -195,7 +201,7 @@ function History() {
                               navigate(`/interview/${interview.interviewId}`);
                             }}
                           >
-                            {<Trans>getButtonText(interview.status)</Trans>}
+                            <Trans>{getButtonText(interview.status)}</Trans>
                           </button>
                         </td>
                       </tr>

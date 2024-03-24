@@ -3,7 +3,7 @@ import { UserContext, apiClient } from "../App";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../useToast";
 import * as model from "../../../model";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation} from "react-i18next";
 
 function Start() {
   const [jobDescription, setJobDescription] = useState<string | null>(null);
@@ -13,6 +13,9 @@ function Start() {
   );
   const [generateLoading, setGenerateLoading] = useState<boolean>(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
+
+  const { i18n } = useTranslation();
+  const currentLanguage = i18n.language;
 
   const userContext = useContext(UserContext);
   const user = userContext?.userContext;
@@ -27,6 +30,7 @@ function Start() {
     formData.append("jobTitle", jobTitle as string);
     formData.append("jobDescription", jobDescription as string);
     formData.append("interviewType", interviewType);
+    formData.append("language", currentLanguage);
 
     await apiClient
       .post("/create-interview", formData, {

@@ -101,6 +101,7 @@ export const handler = ApiHandler(async (event) => {
     if (fields.interviewType === "Technical") {
         prompt += " The interview should be technical so try to tailor some of the questions to the job qualifications if possible.";
     }
+    prompt += "\n Write all questions in the the language code: " +  fields.language + ".";
     const schema = {
         type: "object",
         properties: {

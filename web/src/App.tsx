@@ -4,8 +4,8 @@ import axios from "axios";
 import * as model from "../../model";
 import Router from "./Router";
 import Loading from "./components/Loading";
-import "./i18n"
-import { Trans } from 'react-i18next';
+import "./i18n";
+import { Trans } from "react-i18next";
 import { BsGithub, BsLinkedin } from "react-icons/bs";
 import LanguageSwitcher from "./components/LanguageSwitcher";
 
@@ -71,11 +71,11 @@ function App() {
       <div className="flex flex-col h-screen justify-between">
         <div className="container mx-auto">
           <div className="navbar bg-base-100">
-          <LanguageSwitcher />
+            <LanguageSwitcher />
             <div className="flex-1">
               <Link to="/">
                 <span className="text-xl font-bold">
-                  <Trans>Interview Simulator AI</Trans>
+                  <Trans>Proficio AI</Trans>
                   <span className="badge badge-neutral ml-3">1.0.0</span>
                 </span>{" "}
               </Link>
@@ -83,11 +83,14 @@ function App() {
             {user ? (
               <div className="flex-none gap-2">
                 <span className="mr-3">
-                  {user.credits} {user.credits === 1 ? "Credit" : "Credits"}
+                  {user.credits}{" "}
+                  <Trans>{user.credits === 1 ? "Credit" : "Credits"}</Trans>
                 </span>
                 <div className="form-control">
                   <button className="btn" onClick={() => navigate("/start")}>
-                    <Link to="/start">Start Interview</Link>
+                    <Link to="/start">
+                      <Trans>Start Interview</Trans>
+                    </Link>
                   </button>
                 </div>
                 <div className="dropdown dropdown-end">
