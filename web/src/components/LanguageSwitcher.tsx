@@ -5,6 +5,7 @@ function LanguageSwitcher() {
 console.log('mounting')
   const { i18n } = useTranslation();
 
+    // @ts-ignore
   const changeLanguage = (event) => {
     console.log('changing language')
     i18n.changeLanguage(event.target.value);
