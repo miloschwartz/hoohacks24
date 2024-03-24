@@ -64,14 +64,37 @@ export type Toast = {
 }
 
 export type QuestionFeedback = {
-    contentQuality: ContentQuality
-    structureOrganization: StructureOrganization
-    presentationDelivery: PresentationDelivery
-    supportJustification: SupportJustification
-    criticalThinkingInnovation: CriticalThinkingInnovation
-    culturalContextualFit: CulturalContextualFit
-    interpersonalDynamics: InterpersonalDynamics
+    sections: FeedbackSections;
     overallFeedback: OverallFeedbackQuestion
+}
+
+export type FeedbackSections = {
+    contentQuality: QuestionFeedbackSection
+    structureOrganization: QuestionFeedbackSection
+    presentationDelivery: QuestionFeedbackSection
+    supportJustification: QuestionFeedbackSection
+    criticalThinkingInnovation: QuestionFeedbackSection
+    culturalContextualFit: QuestionFeedbackSection
+    interpersonalDynamics: QuestionFeedbackSection
+}
+
+export type QuestionFeedbackSection = {
+    comments: string;
+    components: QuestionFeedbackComponent[];
+}
+
+export type QuestionFeedbackComponent = {
+    name: string;
+    description: string;
+    rating: Rating;
+}
+
+export type OverallFeedbackQuestion = {
+    comments: string;
+    overallRating: Rating;
+    pros: string[];
+    cons: string[];
+    fillerWords: string[];
 }
 
 export enum QuestionFeedbackType {
@@ -82,65 +105,8 @@ export enum QuestionFeedbackType {
     CRITICAL_THINKING_INNOVATION = "criticalThinkingInnovation",
     CULTURAL_CONTEXTUAL_FIT = "culturalContextualFit",
     INTERPERSONAL_DYNAMICS = "interpersonalDynamics",
-    OVERALL_FEEDBACK = "overallFeedback",
 }
 
-export type ContentQuality = {
-    relevance: Rating;
-    depth: Rating;
-    accuracy: Rating;
-    comments: string;
-}
-
-export type StructureOrganization = {
-    clarity: Rating;
-    flow: Rating;
-    brevity: Rating;
-    comments: string;
-}
-
-export type PresentationDelivery = {
-    confidence: Rating;
-    articulation: Rating;
-    engagement: Rating;
-    comments: string;
-}
-
-export type SupportJustification = {
-    examples: Rating;
-    dataBacked: Rating;
-    referenceExperience: Rating;
-    comments: string;
-}
-
-export type CriticalThinkingInnovation = {
-    insightfulness: Rating;
-    problemSolving: Rating;
-    creativity: Rating;
-    comments: string;
-}
-
-export type CulturalContextualFit = {
-    alignmentValues: Rating;
-    relevanceRole: Rating;
-    awareness: Rating;
-    comments: string;
-}
-
-export type InterpersonalDynamics = {
-    listeningSkills: Rating;
-    adaptability: Rating;
-    emotionalIntelligence: Rating;
-    comments: string;
-}
-
-export type OverallFeedbackQuestion = {
-    comments: string;
-    overallRating: Rating;
-    pros: string[];
-    cons: string[];
-    fillerWords: string[];
-}
 
 export enum Rating {
     VERY_LOW = "VERY_LOW",

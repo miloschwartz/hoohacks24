@@ -3,31 +3,14 @@ import { InterviewContext } from "../pages/InterviewStatus";
 import * as model from "../../../model";
 import QuestionFeedback from "./QuestionFeedback";
 import Rating from "./Rating";
+import { IoSparkles } from "react-icons/io5";
 
 function Feedback() {
   const { interview, setInterview } = useContext(InterviewContext);
   const [expanded, setExpanded] = useState<number>(0);
   const [selectedTab, setSelectedTab] = useState<model.QuestionFeedbackType>(
-    model.QuestionFeedbackType.OVERALL_FEEDBACK
+    model.QuestionFeedbackType.CONTENT_QUALITY
   );
-
-  // use tailwind colors
-  const getRatingColor = (rating: model.Rating) => {
-    switch (rating) {
-      case model.Rating.VERY_LOW:
-        return "bg-red-500";
-      case model.Rating.LOW:
-        return "bg-yellow-500";
-      case model.Rating.MEDIUM:
-        return "bg-yellow-500";
-      case model.Rating.HIGH:
-        return "bg-green-500";
-      case model.Rating.VERY_HIGH:
-        return "bg-green-500";
-      default:
-        return "bg-gray-500";
-    }
-  };
 
   return (
     <>
@@ -39,7 +22,10 @@ function Feedback() {
                 <div className="card-body">
                   <div className="flex flex-row">
                     <h2 className="card-title">Overall Feedback</h2>
-                    <Rating rating={interview.overallFeedback.overallRating} />
+                    <Rating
+                      rating={interview.overallFeedback.overallRating}
+                      size="md"
+                    />
                   </div>
 
                   <div className="stats stats-vertical lg:stats-horizontal mt-4">
@@ -69,27 +55,47 @@ function Feedback() {
                     </div>
                   </div>
 
-                  <p className="py-4">
+                  <p className="mt-4">
                     {interview.overallFeedback.overallComments}
                   </p>
 
-                  <div className="gap-8 columns-2">
-                    <h2 className="text-2xl font-bold text-green-500">
-                      Strengths
-                    </h2>
-                    <ul className="list-disc ml-5 py-4">
-                      {interview.overallFeedback.pros.map((pro, idx) => (
-                        <li key={idx}>{pro}</li>
-                      ))}
-                    </ul>
-                    <h2 className="text-2xl font-bold text-yellow-500">
-                      Weaknesses
-                    </h2>
-                    <ul className="list-disc ml-5 py-4">
-                      {interview.overallFeedback.cons.map((con, idx) => (
-                        <li key={idx}>{con}</li>
-                      ))}
-                    </ul>
+                  <div className="flex flex-wrap mt-4">
+                    <div className="w-full md:w-1/2 mb-6 md:mb-0 pr-6">
+                      <div className="card bg-base-100 h-full flex flex-col">
+                        <div className="card-body flex-grow">
+                          <div className="card-title">Strengths</div>
+                          <ul className="list-disc ml-5 py-4">
+                            {interview.overallFeedback.pros.map((pro, idx) => (
+                              <li key={idx} className="opacity-60">
+                                {pro}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="w-full md:w-1/2 mb-6 md:mb-0">
+                      <div className="card bg-base-100 h-full flex flex-col">
+                        <div className="card-body flex-grow">
+                          <div className="card-title">Weaknesses</div>
+                          <ul className="list-disc ml-5 py-4">
+                            {interview.overallFeedback.cons.map((con, idx) => (
+                              <li key={idx} className="opacity-60">
+                                {con}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="card-actions justify-end mt-4">
+                    <button className="btn btn-secondary">
+                      <IoSparkles />
+                      Enhance Responses
+                    </button>
                   </div>
                 </div>
               </div>
@@ -101,7 +107,7 @@ function Feedback() {
 
                 return (
                   <div
-                    className="collapse collapse-plus bg-base-200"
+                    className="collapse collapse-plus bg-base-200 p-3"
                     key={index}
                   >
                     <input
@@ -113,13 +119,13 @@ function Feedback() {
                       }}
                     />
                     <div className="collapse-title text-xl font-medium">
-                      <div className="flex flex-row">
+                      <div className="flex flex-row items-center">
                         <div>Question {index + 1} </div>
-                        <Rating rating={rating} />
+                        <Rating rating={rating} size="md" />
                       </div>
                     </div>
                     <div className="collapse-content">
-                      <div className="flex flex-col w-full border-opacity-50">
+                      <div className="flex flex-col w-full border-opacity-60">
                         <div className="chat chat-start">
                           <div className="chat-header mb-1">Interviewer</div>
                           <div className="chat-bubble">{question.question}</div>
@@ -127,26 +133,30 @@ function Feedback() {
                         <div className="chat chat-end">
                           <div className="chat-header mb-1">Your Response</div>
                           <div className="chat-bubble chat-bubble-primary">
-                            {question.answer}
+                            <p>{question.answer}</p>
+                            <div className="text-end">
+                              <div
+                                className="tooltip"
+                                data-tip="Enhance Response"
+                              >
+                                <button className="btn btn-circle btn-sm mt-1">
+                                  <IoSparkles />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="chat-footer opacity-60 mt-1">
+                            <span>
+                              {question.totalWordCount} words &middot;{" "}
+                              {(question.duration / 1000 / 60).toFixed(2)}{" "}
+                              minutes &middot;{" "}
+                              {question.wordsPerMinute.toFixed(2)} wpm
+                            </span>
                           </div>
                         </div>
-                        <div className="divider">Feedback</div>
-                        <div className="grid rounded-box place-items-center">
+
+                        <div className="place-items-center grid py-4">
                           <div className="tabs tabs-boxed">
-                            <a
-                              className={`tab ${
-                                selectedTab ===
-                                  model.QuestionFeedbackType.OVERALL_FEEDBACK &&
-                                "tab-active"
-                              }`}
-                              onClick={() =>
-                                setSelectedTab(
-                                  model.QuestionFeedbackType.OVERALL_FEEDBACK
-                                )
-                              }
-                            >
-                              Overall
-                            </a>
                             <a
                               className={`tab ${
                                 selectedTab ===
@@ -253,12 +263,12 @@ function Feedback() {
                               Interpersonal
                             </a>
                           </div>
-                          <div>
-                            <QuestionFeedback
-                              type={selectedTab}
-                              index={expanded}
-                            />
-                          </div>
+                        </div>
+                        <div>
+                          <QuestionFeedback
+                            type={selectedTab}
+                            index={expanded}
+                          />
                         </div>
                       </div>
                     </div>

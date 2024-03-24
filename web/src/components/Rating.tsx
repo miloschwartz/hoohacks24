@@ -2,9 +2,10 @@ import * as model from "../../../model";
 
 interface RatingProps {
   rating: model.Rating;
+  size: "xs" | "sm" | "md" | "lg";
 }
 
-function Rating({ rating }: RatingProps) {
+function Rating({ rating, size }: RatingProps) {
   // use tailwind colors
   const getRatingColor = (rating: model.Rating) => {
     switch (rating) {
@@ -24,31 +25,36 @@ function Rating({ rating }: RatingProps) {
   };
 
   return (
-    <div className="rating ml-auto">
+    <div className={`rating rating-${size} ml-auto gap-1.5`}>
       <input
         type="radio"
-        className={`mask mask-star opacity-50 ${getRatingColor(rating)}`}
+        className={`mask mask-circle ${getRatingColor(rating)}`}
         defaultChecked={rating === model.Rating.VERY_LOW}
+        disabled
       />
       <input
         type="radio"
-        className={`mask mask-star opacity-50 ${getRatingColor(rating)}`}
+        className={`mask mask-circle  ${getRatingColor(rating)}`}
         defaultChecked={rating === model.Rating.LOW}
+        disabled
       />
       <input
         type="radio"
-        className={`mask mask-star opacity-50 ${getRatingColor(rating)}`}
+        className={`mask mask-circle  ${getRatingColor(rating)}`}
         defaultChecked={rating === model.Rating.MEDIUM}
+        disabled
       />
       <input
         type="radio"
-        className={`mask mask-star opacity-50 ${getRatingColor(rating)}`}
+        className={`mask mask-circle  ${getRatingColor(rating)}`}
         defaultChecked={rating === model.Rating.HIGH}
+        disabled
       />
       <input
         type="radio"
-        className={`mask mask-star opacity-50 ${getRatingColor(rating)}`}
+        className={`mask mask-circle  ${getRatingColor(rating)}`}
         defaultChecked={rating === model.Rating.VERY_HIGH}
+        disabled
       />
     </div>
   );

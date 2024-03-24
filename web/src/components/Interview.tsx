@@ -185,7 +185,7 @@ function Interview() {
             >
               <p>{q.question}</p>
             </div>
-            <div className="chat-footer opacity-50 mt-1">
+            <div className="chat-footer opacity-60 mt-1">
               <span>Question {idx + 1}</span>
             </div>
           </div>
@@ -196,7 +196,7 @@ function Interview() {
                 <p>{q.answer}</p>
               </div>
               {q.start && q.end && (
-                <div className="chat-footer opacity-50 mt-1">
+                <div className="chat-footer opacity-60 mt-1">
                   <span>{formatTimeDifference(q.start, q.end)}</span>
                 </div>
               )}
